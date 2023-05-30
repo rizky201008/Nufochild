@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.nufochild.screen.SplashScreen
+import com.nufochild.screens.SplashScreen
 import com.nufochild.ui.theme.NufochildTheme
 
 sealed class Destination(val route: String) {
