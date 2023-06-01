@@ -14,4 +14,11 @@
     <string name="already_registered">Are you registered yet? </string>
     <string name="not_registered">Are you not yet registered? </string>
     <string name="login">Login</string>
+    <string name="nutrition_percentage">Percentage of your daily nutrition</string>
+    <string name="nutrition_detail_title">Nutritional details on food</string>
+    <string name="energy">Energy</string>
+    <string name="protein">Protein</string>
+    <string name="fat">Fat</string>
+    <string name="fiber">Fiber</string> <!--Serat -->
+    <string name="carbohydrates">Carbohydrates</string>
 </resources>

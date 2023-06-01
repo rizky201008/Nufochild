@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +39,8 @@ import com.nufochild.R
 import com.nufochild.ui.components.InputFields
 import com.nufochild.ui.components.MyButton
 import com.nufochild.ui.theme.NufochildTheme
+import com.nufochild.ui.theme.Yellow200
+import com.nufochild.ui.theme.Yellow700
 
 @Composable
 fun RegisterScreen() {
@@ -47,17 +51,16 @@ fun RegisterScreen() {
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(colorResource(id = R.color.yellow_200)),
+            .fillMaxSize()
+            .background(color = Yellow200),
     ) {
         Image(
-            painter = painterResource(id = R.drawable.dounts),
+            painter = painterResource(id = R.drawable.background),
             contentDescription = null,
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .blur(3.dp)
+                .fillMaxSize()
+                .blur(3.dp),
+            contentScale = ContentScale.Crop
         )
         Column(
             modifier = Modifier
@@ -100,9 +103,7 @@ fun RegisterScreen() {
             MyButton(
                 onClick = { /*TODO*/ },
                 text = stringResource(id = R.string.register),
-                color = colorResource(
-                    id = R.color.yellow_700
-                ),
+                color = Yellow700,
                 textColor = Color.White
             )
 
