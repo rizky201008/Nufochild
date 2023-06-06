@@ -1,18 +1,17 @@
 <resources>
-    <string name="app_name">Nufochild</string>
+    <string translatable="false" name="app_name">Nufochild</string>
     <string name="label_name">Name</string>
     <string name="save">Save</string>
     <string name="label_age">Age</string>
     <string name="label_height">Height (CM)</string>
-    <string name="hint_name">Jhoni Dhoel</string>
-    <string name="label_email">Email</string>
-    <string name="hint_email">example@example.com</string>
+    <string translatable="false" name="hint_name">Jhoni Dhoel</string>
+    <string translatable="false" name="label_email">Email</string>
+    <string translatable="false" name="hint_email">example@example.com</string>
     <string name="label_password">Password</string>
-    <string name="hint_password">****</string>
+    <string translatable="false" name="hint_password">****</string>
     <string name="register">Register</string>
     <string name="label_weight">Weight (KG)</string>
-    <string name="hint_weight">30</string>
-    <string name="dob">Chose date of birth</string>
+    <string translatable="false" name="hint_weight">30</string>
     <string name="label_cpassword">Confirm Password</string>
     <string name="already_registered">Are you registered yet? </string>
     <string name="not_registered">Are you not yet registered? </string>

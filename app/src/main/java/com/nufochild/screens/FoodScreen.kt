@@ -13,35 +13,46 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nufochild.R
-import com.nufochild.data.FoodsItem
+import com.nufochild.data.Food
+import com.nufochild.repository.FoodRepository
 import com.nufochild.ui.components.CardFoodList
+import com.nufochild.ui.customview.FoodDialog
 import com.nufochild.ui.theme.Yellow500
+import com.nufochild.ui.theme.Yellow700
+import com.nufochild.viewmodel.FoodViewModel
+import com.nufochild.viewmodel.ViewModelFactory
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FoodListScreen(navController: NavHostController) {
-    val list = listOf(
-        FoodsItem(100, 100, "Nasi", 100, 100, 1, 100),
-        FoodsItem(200, 200, "Kacang", 200, 200, 2, 200),
-        FoodsItem(300, 300, "Melon", 300, 300, 3, 300),
-        FoodsItem(400, 400, "Semangka", 400, 400, 4, 400),
-        FoodsItem(500, 500, "Manggis", 500, 500, 5, 500),
-        FoodsItem(600, 600, "Nanas", 600, 600, 6, 600),
-        FoodsItem(700, 700, "Apel", 700, 700, 7, 700),
-        FoodsItem(800, 800, "Lemon", 800, 800, 8, 800),
-        FoodsItem(900, 900, "Jeruk", 900, 900, 9, 900),
-        FoodsItem(1000, 1000, "Jambu", 1000, 1000, 10, 1000),
-    )
-    val ctx = LocalContext.current
+fun FoodListScreen(
+    navController: NavHostController,
+    viewModel: FoodViewModel = viewModel(
+        factory = ViewModelFactory(
+            FoodRepository()
+        )
+    ),
+) {
+    val foods by viewModel.sortedFoods.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,15 +67,58 @@ fun FoodListScreen(navController: NavHostController) {
             contentScale = ContentScale.Crop
         )
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(list) {
-                CardFoodList(onClick = { /*TODO*/ }, onChecked = {}, text = it.nama!!)
+            item {
+                TopAppBar(
+                    title = {},
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            navController.navigateUp()
+                        }) {
+                            Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                        }
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = Yellow700,
+                        scrolledContainerColor = Color.White,
+                        navigationIconContentColor = Color.White,
+                    ),
+                )
+            }
+            items(foods) {
+                CardFoodList(
+                    onClick = {
+                        viewModel.setFood(
+                            Food(
+                                name = it.nama!!,
+                                carbo = it.karbohidrat!!,
+                                fiber = it.serat!!,
+                                protein = it.protein!!,
+                                fat = it.lemak!!,
+                                energy = it.energi!!
+                            )
+                        )
+                        viewModel.onPurchaseClick()
+                    },
+                    onChecked = {},
+                    text = it.nama!!
+                )
             }
         }
+
+
+        if (viewModel.isDialogShown) {
+            val data by viewModel.foodData.collectAsState()
+            FoodDialog(
+                onDismiss = {
+                    viewModel.onDismissDialog()
+                },
+                title = stringResource(id = R.string.nutrition_detail_title),
+                carbohydrates = data!!.carbo,
+                energy = data!!.energy,
+                fat = data!!.fat,
+                fiber = data!!.fiber,
+                protein = data!!.protein
+            )
+        }
     }
-}
-
-@Preview
-@Composable
-fun FoodListScreenPreview() {
-
 }

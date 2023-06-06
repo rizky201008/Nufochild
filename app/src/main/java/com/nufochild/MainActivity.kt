@@ -32,6 +32,7 @@ sealed class Destination(val route: String) {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             NufochildTheme {
                 // A surface container using the 'background' color from the theme

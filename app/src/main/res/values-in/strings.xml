@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (rizky201008) 2023.
+  ~ All code in this application is made by the author.
+  ~ You may copy part of this code and you are allowed to include the author's name anywhere.
+  -->
+
+<resources>
+    <string name="label_name">Nama</string>
+    <string name="save">Simpan</string>
+    <string name="label_age">Umur</string>
+    <string name="label_height">Tinggi (CM)</string>
+    <string name="label_password">Kata Sandi</string>
+    <string name="register">Daftar</string>
+    <string name="label_weight">Berat (KG)</string>
+    <string name="label_cpassword">Ulangi Kata Sandi</string>
+    <string name="already_registered">Kamu sudah terdaftar? </string>
+    <string name="not_registered">Kamu belum terdaftar? </string>
+    <string name="login">Masuk</string>
+    <string name="nutrition_percentage">Persentase Nutrisi Harian Kamu</string>
+    <string name="nutrition_detail_title">Detail nutrisi pada makanan</string>
+    <string name="energy">Energi</string>
+    <string name="protein">Protein</string>
+    <string name="fat">Lemak</string>
+    <string name="fiber">Serat</string>
+    <string name="carbohydrates">Karbohidrat</string>
+</resources>
