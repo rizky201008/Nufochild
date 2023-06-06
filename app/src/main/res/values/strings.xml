@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Nufochild</string>
     <string name="label_name">Name</string>
+    <string name="save">Save</string>
+    <string name="label_age">Age</string>
+    <string name="label_height">Height (CM)</string>
     <string name="hint_name">Jhoni Dhoel</string>
     <string name="label_email">Email</string>
     <string name="hint_email">example@example.com</string>

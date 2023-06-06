@@ -12,6 +12,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.nufochild.screens.FoodListScreen
+import com.nufochild.screens.HomeScreen
+import com.nufochild.screens.LoginScreen
+import com.nufochild.screens.RegisterScreen
+import com.nufochild.screens.SettingScreen
 import com.nufochild.screens.SplashScreen
 import com.nufochild.ui.theme.NufochildTheme
 
@@ -21,6 +26,7 @@ sealed class Destination(val route: String) {
     object Register : Destination("register")
     object Login : Destination("login")
     object Foods : Destination("foods")
+    object Setting : Destination("setting")
 }
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +49,24 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationAppHosts(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "splash") {
-        composable(Destination.SplashScreen.route) { SplashScreen(navController) }
+    NavHost(navController = navController, startDestination = Destination.SplashScreen.route) {
+        composable(Destination.SplashScreen.route) {
+            SplashScreen(navController)
+        }
+        composable(Destination.Home.route) {
+            HomeScreen(navController)
+        }
+        composable(Destination.Setting.route) {
+            SettingScreen(navController)
+        }
+        composable(Destination.Login.route) {
+            LoginScreen(navController)
+        }
+        composable(Destination.Register.route) {
+            RegisterScreen(navController)
+        }
+        composable(Destination.Foods.route) {
+            FoodListScreen(navController)
+        }
     }
 }
