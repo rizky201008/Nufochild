@@ -14,7 +14,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,8 +22,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import coil.compose.rememberAsyncImagePainter
 import com.nufochild.screens.CameraScreen
+import com.nufochild.screens.DetectingImageScreen
 import com.nufochild.ui.theme.NufochildTheme
 import java.io.File
 import java.util.concurrent.ExecutorService
@@ -43,39 +42,38 @@ class CameraActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            Log.i("kilo", "Permission granted")
+            Log.i("nufochild", "Permission granted")
             shouldShowCamera.value = true
         } else {
-            Log.i("kilo", "Permission denied")
+            Log.i("nufochild", "Permission denied")
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            if (shouldShowCamera.value) {
-                NufochildTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
+            NufochildTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    if (shouldShowCamera.value) {
                         CameraScreen(
                             outputDirectory = outputDirectory,
                             executor = cameraExecutor,
                             onImageCaptured = ::handleImageCapture,
-                            onError = { Log.e("kilo", "View error:", it) }
+                            onError = { Log.e("nufochild", "View error:", it) }
+                        )
+                    }
+                    if (shouldShowPhoto.value) {
+                        DetectingImageScreen(
+                            contentDescription = null,
+                            onBackClicked = { finish() },
+                            painter = photoUri
                         )
                     }
                 }
-            }
-
-            if (shouldShowPhoto.value) {
-                Image(
-                    painter = rememberAsyncImagePainter(photoUri),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
             }
         }
 
@@ -92,21 +90,21 @@ class CameraActivity : ComponentActivity() {
                 this,
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.i("kilo", "Permission previously granted")
+                Log.i("nufochild", "Permission previously granted")
                 shouldShowCamera.value = true
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
                 Manifest.permission.CAMERA
-            ) -> Log.i("kilo", "Show camera permissions dialog")
+            ) -> Log.i("nufochild", "Show camera permissions dialog")
 
             else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
     private fun handleImageCapture(uri: Uri) {
-        Log.i("kilo", "Image captured: $uri")
+        Log.i("nufochild", "Image captured: $uri")
         shouldShowCamera.value = false
 
         photoUri = uri

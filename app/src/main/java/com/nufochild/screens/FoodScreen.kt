@@ -11,21 +11,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,9 +32,9 @@ import com.nufochild.R
 import com.nufochild.data.Food
 import com.nufochild.repository.FoodRepository
 import com.nufochild.ui.components.CardFoodList
+import com.nufochild.ui.components.TopBarBackButton
 import com.nufochild.ui.customview.FoodDialog
 import com.nufochild.ui.theme.Yellow500
-import com.nufochild.ui.theme.Yellow700
 import com.nufochild.viewmodel.FoodViewModel
 import com.nufochild.viewmodel.ViewModelFactory
 
@@ -53,72 +49,63 @@ fun FoodListScreen(
     ),
 ) {
     val foods by viewModel.sortedFoods.collectAsState()
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Yellow500)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.background),
-            contentDescription = null,
+    Scaffold(
+        topBar = {
+            TopBarBackButton(onclick = { navController.navigateUp() })
+        }
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
-                .blur(3.dp),
-            contentScale = ContentScale.Crop
-        )
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            item {
-                TopAppBar(
-                    title = {},
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            navController.navigateUp()
-                        }) {
-                            Icon(Icons.Filled.ArrowBack, contentDescription = null)
-                        }
-                    },
-                    colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Yellow700,
-                        scrolledContainerColor = Color.White,
-                        navigationIconContentColor = Color.White,
-                    ),
-                )
-            }
-            items(foods) {
-                CardFoodList(
-                    onClick = {
-                        viewModel.setFood(
-                            Food(
-                                name = it.nama!!,
-                                carbo = it.karbohidrat!!,
-                                fiber = it.serat!!,
-                                protein = it.protein!!,
-                                fat = it.lemak!!,
-                                energy = it.energi!!
-                            )
-                        )
-                        viewModel.onPurchaseClick()
-                    },
-                    onChecked = {},
-                    text = it.nama!!
-                )
-            }
-        }
-
-
-        if (viewModel.isDialogShown) {
-            val data by viewModel.foodData.collectAsState()
-            FoodDialog(
-                onDismiss = {
-                    viewModel.onDismissDialog()
-                },
-                title = stringResource(id = R.string.nutrition_detail_title),
-                carbohydrates = data!!.carbo,
-                energy = data!!.energy,
-                fat = data!!.fat,
-                fiber = data!!.fiber,
-                protein = data!!.protein
+                .background(color = Yellow500),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.background),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .blur(3.dp),
+                contentScale = ContentScale.Crop
             )
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                items(foods) {
+                    CardFoodList(
+                        onClick = {
+                            viewModel.setFood(
+                                Food(
+                                    name = it.nama!!,
+                                    carbo = it.karbohidrat!!,
+                                    fiber = it.serat!!,
+                                    protein = it.protein!!,
+                                    fat = it.lemak!!,
+                                    energy = it.energi!!
+                                )
+                            )
+                            viewModel.onPurchaseClick()
+                        },
+                        onChecked = {},
+                        text = it.nama!!
+                    )
+                }
+            }
         }
+    }
+
+
+    if (viewModel.isDialogShown) {
+        val data by viewModel.foodData.collectAsState()
+        FoodDialog(
+            onDismiss = {
+                viewModel.onDismissDialog()
+            },
+            title = stringResource(id = R.string.nutrition_detail_title),
+            carbohydrates = data!!.carbo,
+            energy = data!!.energy,
+            fat = data!!.fat,
+            fiber = data!!.fiber,
+            protein = data!!.protein
+        )
     }
 }

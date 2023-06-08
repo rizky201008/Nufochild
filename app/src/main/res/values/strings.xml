@@ -23,5 +23,6 @@
     <string name="fat">Fat</string>
     <string name="fiber">Fiber</string> <!--Serat -->
     <string name="carbohydrates">Carbohydrates</string>
-    <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_camera" translatable="false">CameraActivity</string>
+    <string name="detecting">detecting...</string>
 </resources>
