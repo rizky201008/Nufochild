@@ -1,5 +1,7 @@
 package com.nufochild
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -70,4 +73,8 @@ fun NavigationAppHosts(navController: NavHostController) {
             FoodListScreen(navController)
         }
     }
+}
+
+fun toCamera(context: Context) {
+    ContextCompat.startActivity(context, Intent(context, CameraActivity::class.java), null)
 }

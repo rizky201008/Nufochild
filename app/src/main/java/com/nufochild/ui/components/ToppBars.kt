@@ -20,17 +20,20 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nufochild.Destination
 import com.nufochild.R
+import com.nufochild.toCamera
 import com.nufochild.ui.theme.Yellow700
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarMain(navController: NavHostController) {
+    val ctx = LocalContext.current
     TopAppBar(
         title = {},
         navigationIcon = {
@@ -53,7 +56,9 @@ fun TopBarMain(navController: NavHostController) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
-                    .clickable { }
+                    .clickable {
+                        toCamera(ctx)
+                    }
             )
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
