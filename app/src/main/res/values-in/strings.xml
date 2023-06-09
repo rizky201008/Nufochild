@@ -25,4 +25,5 @@
     <string name="fiber">Serat</string>
     <string name="carbohydrates">Karbohidrat</string>
     <string name="detecting">mendeteksi...</string>
+    <string name="label_gender">Jenis Kelamin</string>
 </resources>

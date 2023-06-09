@@ -73,6 +73,9 @@ dependencies {
     implementation 'androidx.compose.runtime:runtime-livedata'
     implementation 'androidx.camera:camera-core:1.0.2'
 
+//    SystemUI Controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
+
     // CameraX
     def camerax_version = "1.0.1"
     implementation "androidx.camera:camera-camera2:$camerax_version"

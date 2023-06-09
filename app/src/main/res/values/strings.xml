@@ -13,6 +13,7 @@
     <string name="label_weight">Weight (KG)</string>
     <string name="hint_weight" translatable="false">30</string>
     <string name="label_cpassword">Confirm Password</string>
+    <string name="label_gender">Gender</string>
     <string name="already_registered">Are you registered yet? </string>
     <string name="not_registered">Are you not yet registered? </string>
     <string name="login">Login</string>

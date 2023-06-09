@@ -6,10 +6,4 @@
 
 package com.nufochild.data
 
-data class DetailUser(
-    val name: String,
-    val gender: String,
-    val height: Int,
-    val weight: Int,
-    val age: Int
-)
+data class Video(val image: String, val url: String, val title: String)
