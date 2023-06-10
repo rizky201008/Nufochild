@@ -31,6 +31,7 @@ import androidx.navigation.NavHostController
 import com.nufochild.R
 import com.nufochild.data.Food
 import com.nufochild.repository.FoodRepository
+import com.nufochild.repository.VideoRepository
 import com.nufochild.ui.components.CardFoodList
 import com.nufochild.ui.components.TopBarBackButton
 import com.nufochild.ui.customview.FoodDialog
@@ -44,7 +45,7 @@ fun FoodListScreen(
     navController: NavHostController,
     viewModel: FoodViewModel = viewModel(
         factory = ViewModelFactory(
-            FoodRepository()
+            FoodRepository(), VideoRepository()
         )
     ),
 ) {

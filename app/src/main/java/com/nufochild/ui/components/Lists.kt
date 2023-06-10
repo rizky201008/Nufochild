@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,8 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,13 +31,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.nufochild.R
 import com.nufochild.ui.theme.Black
-import com.nufochild.ui.theme.NufochildTheme
 import com.nufochild.ui.theme.Yellow200
+import com.nufochild.ui.theme.Yellow500
 
 @Composable
 fun CardFoodList(
@@ -84,45 +83,37 @@ fun CardFoodList(
 }
 
 @Composable
-fun CardVideoList() {
+fun CardVideoList(modifier: Modifier, image: String, title: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(5.dp)
     ) {
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent, contentColor = Color.Transparent
             ),
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(
-                    color = Yellow200, shape = RoundedCornerShape(10.dp)
+                    color = Yellow500, shape = RoundedCornerShape(10.dp)
                 ),
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .height(150.dp),
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.sayuran),
+                AsyncImage(
+                    model = image,
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
+                        .fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_play_arrow_24),
-                        contentDescription = null,
-                        modifier = Modifier.size(15.dp)
-                    )
-                }
             }
             Text(
-                text = "Example youtube video title",
+                text = title,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Normal,
@@ -182,10 +173,10 @@ fun CardDetailUserList(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = false)
-@Composable
-fun CardsPreview() {
-    NufochildTheme {
-        CardVideoList()
-    }
-}
+//@Preview(showBackground = true, showSystemUi = false)
+//@Composable
+//fun CardsPreview() {
+//    NufochildTheme {
+//        CardVideoList(modifier = Modifier.clickable { })
+//    }
+//}
