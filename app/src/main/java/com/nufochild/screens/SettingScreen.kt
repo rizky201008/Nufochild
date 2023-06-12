@@ -38,14 +38,14 @@ import com.nufochild.ui.theme.Yellow700
 @Composable
 fun SettingScreen(navController: NavHostController) {
     val lists = listOf(
-        DetailUser("Joko", "Male", 30, 30, 3)
+        DetailUser("Joko", "Male", 30, "abcdefg", 3)
     )
     Scaffold(topBar = {
         TopBarBackButton(
             onclick = {
                 navController.navigateUp()
             },
-            title = lists[0].name
+            title = lists[0].name ?: ""
         )
     }) { innerPadding ->
         Box(
@@ -73,21 +73,21 @@ fun SettingScreen(navController: NavHostController) {
                 item {
                     CardDetailUserList(
                         onChecked = {},
-                        text = lists[0].gender,
+                        text = lists[0].gender ?: "",
                         title = stringResource(id = R.string.label_gender)
                     )
                 }
                 item {
                     CardDetailUserList(
                         onChecked = {},
-                        text = lists[0].weight.toString(),
+                        text = lists[0].weight.toString() ?: "",
                         title = stringResource(id = R.string.label_weight)
                     )
                 }
                 item {
                     CardDetailUserList(
                         onChecked = {},
-                        text = lists[0].height.toString(),
+                        text = lists[0].height.toString() ?: "",
                         title = stringResource(id = R.string.label_height)
                     )
                 }

@@ -12,8 +12,8 @@ import com.nufochild.repository.FoodRepository
 import com.nufochild.repository.VideoRepository
 
 class ViewModelFactory(
-    val foodRepository: FoodRepository? = null,
-    val videoRepository: VideoRepository? = null
+    private val foodRepository: FoodRepository,
+    private val videoRepository: VideoRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")

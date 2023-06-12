@@ -6,10 +6,25 @@
 
 package com.nufochild.data
 
+import com.google.gson.annotations.SerializedName
+
 data class DetailUser(
-    val name: String,
-    val gender: String,
-    val height: Int,
-    val weight: Int,
-    val age: Int
+
+	@field:SerializedName("gender")
+	val gender: String? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
+
+	@field:SerializedName("weight")
+	val weight: Int? = null,
+
+	@field:SerializedName("userId")
+	val userId: String? = null,
+
+	@field:SerializedName("age")
+	val age: Int? = null,
+
+	@field:SerializedName("height")
+	val height: Int? = null
 )

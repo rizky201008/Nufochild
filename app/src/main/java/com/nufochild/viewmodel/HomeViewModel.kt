@@ -9,9 +9,12 @@ package com.nufochild.viewmodel
 import androidx.lifecycle.ViewModel
 import com.nufochild.data.Video
 import com.nufochild.repository.VideoRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val repository: VideoRepository,
 ) : ViewModel() {
     private val _videoData = MutableStateFlow<List<Video>?>(null)
