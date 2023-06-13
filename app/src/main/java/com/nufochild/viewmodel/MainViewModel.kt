@@ -12,10 +12,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nufochild.data.general.Food
+import com.nufochild.data.request.RequestLogin
 import com.nufochild.data.response.FoodsItem
 import com.nufochild.data.response.Video
 import com.nufochild.repository.MainRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -69,16 +69,16 @@ class MainViewModel(
     }
 
     fun getToken() {
-            val token = repository.getToken()
-            _token.value = token
+        val token = repository.getToken()
+        _token.value = token
     }
 
-    fun login(email: String, password: String) {
+    fun login(value: RequestLogin) {
         _showLoading.value = true
         viewModelScope.launch {
-            delay(3000)
+            val response = repository.loginAccount(value)
             _showLoading.value = false
-            _loginSuccess.value = true
+            _loginSuccess.value = response
         }
     }
 }

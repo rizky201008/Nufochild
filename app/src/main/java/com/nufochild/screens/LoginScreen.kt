@@ -38,6 +38,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.nufochild.Destination
 import com.nufochild.R
+import com.nufochild.data.request.RequestLogin
 import com.nufochild.ui.components.InputFields
 import com.nufochild.ui.components.MyButton
 import com.nufochild.ui.theme.Yellow200
@@ -51,20 +52,10 @@ import org.koin.androidx.compose.getViewModel
 fun LoginScreen(navController: NavHostController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel = getViewModel<MainViewModel>()
-    viewModel.getToken()
 
-    val tokens = viewModel.token.collectAsState()
-    val token by remember { mutableStateOf(tokens.value) }
     val showLoading = viewModel.showLoading.collectAsState()
-    val loginSuccess = viewModel.loginSuccess.collectAsState()
     val isLoading = showLoading.value
-    val isLoginSuccess = loginSuccess.value
 
-
-    if (token !== "") {
-        navController.popBackStack()
-        navController.navigate(Destination.Home.route)
-    }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -112,10 +103,12 @@ fun LoginScreen(navController: NavHostController) {
                     strokeWidth = 10.dp
                 )
             } else {
+                val loginSuccess = viewModel.loginSuccess.collectAsState()
+                val isLoginSuccess = loginSuccess.value
                 MyButton(
                     onClick = {
                         if (email.isNotEmpty() && password.isNotEmpty()) {
-                            viewModel.login(email, password)
+                            viewModel.login(RequestLogin(password, email))
                             if (isLoginSuccess) {
                                 keyboardController?.hide()
                                 navController.popBackStack()

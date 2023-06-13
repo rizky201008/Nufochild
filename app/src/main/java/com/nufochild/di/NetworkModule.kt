@@ -6,12 +6,8 @@
 
 package com.nufochild.di
 
-import com.nufochild.data.general.SessionPref
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val networkModule = module {
-    single {
-        SessionPref(androidContext())
-    }
+
 }

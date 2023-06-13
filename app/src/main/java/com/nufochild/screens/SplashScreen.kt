@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,17 +18,29 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nufochild.Destination
 import com.nufochild.R
+import com.nufochild.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SplashScreen(navController: NavController) {
+    val viewModel = getViewModel<MainViewModel>()
+    viewModel.getToken()
+
+    val tokens = viewModel.token.collectAsState()
+    val token = tokens.value
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch {
             delay(3000)
             navController.popBackStack()
-            navController.navigate(Destination.Login.route)
+            if (token !== "") {
+                navController.popBackStack()
+                navController.navigate(Destination.Home.route)
+            } else {
+                navController.navigate(Destination.Login.route)
+            }
         }
     }
     Column(

@@ -7,21 +7,28 @@
 package com.nufochild.api
 
 import com.nufochild.data.request.RequestLogin
-import com.nufochild.data.response.ResponseDetailUser
 import com.nufochild.data.response.ResponseLogin
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiServices {
-    @GET("profile")
-    fun getProfile(
-        @Header("Authorization") token: String
-    ): ResponseDetailUser
-
     @POST("auth/login")
-    fun login(
+    suspend  fun login(
         @Body() body: RequestLogin
     ): ResponseLogin
+
+    companion object {
+        var apiService: ApiServices? = null
+        fun getInstance() : ApiServices {
+            if (apiService == null) {
+                apiService = Retrofit.Builder()
+                    .baseUrl("https://database-api-rezeodju2q-et.a.run.app/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build().create(ApiServices::class.java)
+            }
+            return apiService!!
+        }
+    }
 }
