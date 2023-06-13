@@ -7,9 +7,10 @@
 package com.nufochild.module
 
 import com.nufochild.api.ApiServices
-import com.nufochild.repository.FoodRepository
-import com.nufochild.repository.VideoRepository
+import com.nufochild.repository.MainRepository
+import com.nufochild.viewmodel.MainViewModel
 import com.nufochild.viewmodel.ViewModelFactory
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,12 +24,12 @@ val appModule = module {
             .create(ApiServices::class.java)
     }
     single {
-        VideoRepository()
-    }
-    single {
-        FoodRepository()
+        MainRepository()
     }
     single<ViewModelFactory> {
-        ViewModelFactory(get(), get())
+        ViewModelFactory(get())
+    }
+    viewModel {
+        MainViewModel(get())
     }
 }

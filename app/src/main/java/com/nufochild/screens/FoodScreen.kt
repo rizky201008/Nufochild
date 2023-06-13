@@ -26,29 +26,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nufochild.R
 import com.nufochild.data.Food
-import com.nufochild.repository.FoodRepository
-import com.nufochild.repository.VideoRepository
 import com.nufochild.ui.components.CardFoodList
 import com.nufochild.ui.components.TopBarBackButton
 import com.nufochild.ui.customview.FoodDialog
 import com.nufochild.ui.theme.Yellow500
-import com.nufochild.viewmodel.FoodViewModel
-import com.nufochild.viewmodel.ViewModelFactory
+import com.nufochild.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodListScreen(
     navController: NavHostController,
-    viewModel: FoodViewModel = viewModel(
-        factory = ViewModelFactory(
-            FoodRepository(), VideoRepository()
-        )
-    ),
 ) {
+    val viewModel = getViewModel<MainViewModel>()
     val foods by viewModel.sortedFoods.collectAsState()
     Scaffold(
         topBar = {

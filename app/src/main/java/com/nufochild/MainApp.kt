@@ -8,6 +8,7 @@ package com.nufochild
 
 import android.app.Application
 import com.nufochild.module.appModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
 class MainApp : Application() {
@@ -15,6 +16,7 @@ class MainApp : Application() {
         super.onCreate()
         startKoin {
             modules(appModule)
+            androidContext(this@MainApp)
         }
     }
 }

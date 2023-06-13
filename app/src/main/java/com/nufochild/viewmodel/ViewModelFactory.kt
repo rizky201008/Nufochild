@@ -8,20 +8,16 @@ package com.nufochild.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.nufochild.repository.FoodRepository
-import com.nufochild.repository.VideoRepository
+import com.nufochild.repository.MainRepository
 
 class ViewModelFactory(
-    private val foodRepository: FoodRepository,
-    private val videoRepository: VideoRepository
+    private val mainRepository: MainRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FoodViewModel::class.java)) {
-            return FoodViewModel(foodRepository!!) as T
-        } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(videoRepository!!) as T
+       if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(mainRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

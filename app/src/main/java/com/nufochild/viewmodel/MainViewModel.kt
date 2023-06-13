@@ -12,11 +12,25 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.nufochild.data.Food
 import com.nufochild.data.FoodsItem
-import com.nufochild.repository.FoodRepository
+import com.nufochild.data.Video
+import com.nufochild.repository.MainRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class FoodViewModel(private val repository: FoodRepository) : ViewModel() {
+class MainViewModel(
+    private val repository: MainRepository,
+) : ViewModel() {
+    private val _videoData = MutableStateFlow<List<Video>?>(null)
+    val videoData: MutableStateFlow<List<Video>?> get() = _videoData
+    fun getVideo() {
+        val videos = repository.getVideos()
+        _videoData.value = videos
+    }
+
+    init {
+        getVideo()
+    }
+
     var isDialogShown by mutableStateOf(false)
         private set
 

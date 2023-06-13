@@ -6,10 +6,15 @@
 
 package com.nufochild.repository
 
+import com.nufochild.data.FoodData
+import com.nufochild.data.FoodsItem
 import com.nufochild.data.Video
 import com.nufochild.data.videoData
 
-class VideoRepository {
+class MainRepository {
+    fun getFood(): List<FoodsItem> {
+        return FoodData.data
+    }
 
     fun getVideos(): List<Video> {
         return videoData
