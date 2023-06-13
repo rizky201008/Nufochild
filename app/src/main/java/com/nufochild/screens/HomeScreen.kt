@@ -32,30 +32,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nufochild.R
 import com.nufochild.ui.components.CardVideoList
 import com.nufochild.ui.components.TopBarMain
-import com.nufochild.ui.theme.NufochildTheme
 import com.nufochild.ui.theme.White
 import com.nufochild.ui.theme.Yellow500
 import com.nufochild.ui.theme.Yellow700
 import com.nufochild.viewmodel.MainViewModel
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
+    viewModel: MainViewModel = koinViewModel()
 ) {
-    val viewModel = getViewModel<MainViewModel>()
+    viewModel.getVideo()
     val videoDataState by viewModel.videoData.collectAsState()
     val videos = remember { videoDataState ?: emptyList() }
     val energy by remember {
@@ -229,15 +227,5 @@ fun HomeScreen(
                 )
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun HomePreview() {
-    val ctx = LocalContext.current
-    NufochildTheme {
-        HomeScreen(navController = NavHostController(ctx))
     }
 }

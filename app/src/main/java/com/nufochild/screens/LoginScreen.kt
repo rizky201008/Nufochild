@@ -15,33 +15,56 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
+import com.nufochild.Destination
 import com.nufochild.R
 import com.nufochild.ui.components.InputFields
 import com.nufochild.ui.components.MyButton
 import com.nufochild.ui.theme.Yellow200
 import com.nufochild.ui.theme.Yellow700
+import com.nufochild.ui.theme.Yellow900
+import com.nufochild.viewmodel.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(navController: NavHostController) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val viewModel = getViewModel<MainViewModel>()
+    viewModel.getToken()
+
+    val tokens = viewModel.token.collectAsState()
+    val token by remember { mutableStateOf(tokens.value) }
+    val showLoading = viewModel.showLoading.collectAsState()
+    val loginSuccess = viewModel.loginSuccess.collectAsState()
+    val isLoading = showLoading.value
+    val isLoginSuccess = loginSuccess.value
+
+
+    if (token !== "") {
+        navController.popBackStack()
+        navController.navigate(Destination.Home.route)
+    }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -82,12 +105,29 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(100.dp))
 
-            MyButton(
-                onClick = { /*TODO*/ },
-                text = stringResource(id = R.string.login),
-                color = Yellow700,
-                textColor = Color.White
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.padding(10.dp),
+                    color = Yellow700,
+                    strokeWidth = 10.dp
+                )
+            } else {
+                MyButton(
+                    onClick = {
+                        if (email.isNotEmpty() && password.isNotEmpty()) {
+                            viewModel.login(email, password)
+                            if (isLoginSuccess) {
+                                keyboardController?.hide()
+                                navController.popBackStack()
+                                navController.navigate(Destination.Home.route)
+                            }
+                        }
+                    },
+                    text = stringResource(id = R.string.login),
+                    color = Yellow700,
+                    textColor = Color.White
+                )
+            }
 
             Row(
                 modifier = Modifier
@@ -101,16 +141,14 @@ fun LoginScreen(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(id = R.string.not_registered))
-                Text(text = stringResource(id = R.string.register),
-                    color = colorResource(id = R.color.yellow_900),
-                    modifier = Modifier.clickable { }
+                Text(
+                    text = stringResource(id = R.string.register),
+                    color = Yellow900,
+                    modifier = Modifier.clickable {
+                        navController.navigate(Destination.Register.route)
+                    }
                 )
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginPrev() {
 }

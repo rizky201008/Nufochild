@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nufochild.R
-import com.nufochild.data.DetailUser
+import com.nufochild.data.response.ResponseDetailUser
 import com.nufochild.ui.components.CardDetailUserList
 import com.nufochild.ui.components.MyButton
 import com.nufochild.ui.components.TopBarBackButton
@@ -38,7 +38,7 @@ import com.nufochild.ui.theme.Yellow700
 @Composable
 fun SettingScreen(navController: NavHostController) {
     val lists = listOf(
-        DetailUser("Joko", "Male", 30, "abcdefg", 3)
+        ResponseDetailUser("Joko", "Male", 30, "abcdefg", 3)
     )
     Scaffold(topBar = {
         TopBarBackButton(

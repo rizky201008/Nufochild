@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nufochild.R
-import com.nufochild.data.Food
+import com.nufochild.data.general.Food
 import com.nufochild.ui.components.CardFoodList
 import com.nufochild.ui.components.TopBarBackButton
 import com.nufochild.ui.customview.FoodDialog
@@ -43,6 +43,7 @@ fun FoodListScreen(
 ) {
     val viewModel = getViewModel<MainViewModel>()
     val foods by viewModel.sortedFoods.collectAsState()
+
     Scaffold(
         topBar = {
             TopBarBackButton(onclick = { navController.navigateUp() })

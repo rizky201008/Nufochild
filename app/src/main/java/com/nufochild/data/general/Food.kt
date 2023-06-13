@@ -4,7 +4,7 @@
  * You may copy part of this code and you are allowed to include the author's name anywhere.
  */
 
-package com.nufochild.data
+package com.nufochild.data.general
 
 data class Food(
     val name: String,

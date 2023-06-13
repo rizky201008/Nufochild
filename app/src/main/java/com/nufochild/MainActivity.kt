@@ -3,6 +3,7 @@ package com.nufochild
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -77,4 +78,8 @@ fun NavigationAppHosts(navController: NavHostController) {
 
 fun toCamera(context: Context) {
     ContextCompat.startActivity(context, Intent(context, CameraActivity::class.java), null)
+}
+
+fun showToast(ctx: Context, msg: String) {
+    Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
 }

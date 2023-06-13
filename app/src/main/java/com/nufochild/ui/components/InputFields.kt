@@ -10,26 +10,28 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nufochild.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun InputFields(
     label: String = "Example label",
@@ -38,6 +40,7 @@ fun InputFields(
     onChange: (String) -> Unit,
     type: KeyboardType = KeyboardType.Text,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val passwordHide = if (type == KeyboardType.Password) {
         PasswordVisualTransformation()
     } else {
@@ -68,6 +71,9 @@ fun InputFields(
         label = { Text(text = label) },
         placeholder = { Text(text = placeholder) },
         keyboardOptions = KeyboardOptions(keyboardType = type),
-        visualTransformation = passwordHide
+        visualTransformation = passwordHide,
+        keyboardActions = KeyboardActions(
+            onDone = { keyboardController?.hide() }
+        )
     )
 }

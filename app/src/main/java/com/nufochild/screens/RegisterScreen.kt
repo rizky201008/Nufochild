@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,6 +39,7 @@ import com.nufochild.ui.components.InputFields
 import com.nufochild.ui.components.MyButton
 import com.nufochild.ui.theme.Yellow200
 import com.nufochild.ui.theme.Yellow700
+import com.nufochild.ui.theme.Yellow900
 
 @Composable
 fun RegisterScreen(navController: NavHostController) {
@@ -119,8 +119,10 @@ fun RegisterScreen(navController: NavHostController) {
             ) {
                 Text(text = stringResource(id = R.string.already_registered))
                 Text(text = stringResource(id = R.string.login),
-                    color = colorResource(id = R.color.yellow_900),
-                    modifier = Modifier.clickable { }
+                    color = Yellow900,
+                    modifier = Modifier.clickable {
+                        navController.navigateUp()
+                    }
                 )
             }
         }

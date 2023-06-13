@@ -23,6 +23,7 @@
     <string name="protein">Protein</string>
     <string name="fat">Lemak</string>
     <string name="fiber">Serat</string>
+    <string name="loading">Memuat...</string>
     <string name="carbohydrates">Karbohidrat</string>
     <string name="detecting">mendeteksi...</string>
     <string name="label_gender">Jenis Kelamin</string>

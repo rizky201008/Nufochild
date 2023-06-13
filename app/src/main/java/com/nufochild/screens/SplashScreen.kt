@@ -27,7 +27,7 @@ fun SplashScreen(navController: NavController) {
         coroutineScope.launch {
             delay(3000)
             navController.popBackStack()
-            navController.navigate(Destination.Home.route)
+            navController.navigate(Destination.Login.route)
         }
     }
     Column(

@@ -6,17 +6,24 @@
 
 package com.nufochild.repository
 
-import com.nufochild.data.FoodData
-import com.nufochild.data.FoodsItem
-import com.nufochild.data.Video
-import com.nufochild.data.videoData
+import com.nufochild.data.general.SessionPref
+import com.nufochild.data.response.FoodData
+import com.nufochild.data.response.FoodsItem
+import com.nufochild.data.response.Video
+import com.nufochild.data.response.videoData
 
-class MainRepository {
+class MainRepository(
+    private val sessionPref: SessionPref,
+) {
+    fun getVideos(): List<Video> {
+        return videoData
+    }
+
     fun getFood(): List<FoodsItem> {
         return FoodData.data
     }
 
-    fun getVideos(): List<Video> {
-        return videoData
+    fun getToken(): String {
+        return sessionPref.getToken()
     }
 }

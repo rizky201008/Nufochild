@@ -10,12 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.nufochild.data.Food
-import com.nufochild.data.FoodsItem
-import com.nufochild.data.Video
+import androidx.lifecycle.viewModelScope
+import com.nufochild.data.general.Food
+import com.nufochild.data.response.FoodsItem
+import com.nufochild.data.response.Video
 import com.nufochild.repository.MainRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val repository: MainRepository,
@@ -25,10 +28,6 @@ class MainViewModel(
     fun getVideo() {
         val videos = repository.getVideos()
         _videoData.value = videos
-    }
-
-    init {
-        getVideo()
     }
 
     var isDialogShown by mutableStateOf(false)
@@ -52,11 +51,34 @@ class MainViewModel(
     private val _foodData = MutableStateFlow<Food?>(null)
     val foodData: StateFlow<Food?> get() = _foodData
 
+    private val _showLoading = MutableStateFlow(false)
+    val showLoading: StateFlow<Boolean> get() = _showLoading
+
+    private val _loginSuccess = MutableStateFlow(false)
+    val loginSuccess: StateFlow<Boolean> get() = _loginSuccess
+
+    private val _token = MutableStateFlow<String?>("")
+    val token: StateFlow<String?> get() = _token
+
     fun setFood(food: Food) {
         _foodData.value = food
     }
 
     fun resetFood() {
         _foodData.value = null
+    }
+
+    fun getToken() {
+            val token = repository.getToken()
+            _token.value = token
+    }
+
+    fun login(email: String, password: String) {
+        _showLoading.value = true
+        viewModelScope.launch {
+            delay(3000)
+            _showLoading.value = false
+            _loginSuccess.value = true
+        }
     }
 }

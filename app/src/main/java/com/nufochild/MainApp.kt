@@ -7,7 +7,9 @@
 package com.nufochild
 
 import android.app.Application
-import com.nufochild.module.appModule
+import com.nufochild.di.networkModule
+import com.nufochild.di.otherModule
+import com.nufochild.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -15,8 +17,8 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            modules(appModule)
             androidContext(this@MainApp)
+            modules(listOf(otherModule, networkModule, viewModelModule))
         }
     }
 }
