@@ -8,13 +8,7 @@ package com.nufochild.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseLogin(
-
-    @field:SerializedName("accessToken")
-    val accessToken: String? = null,
-
-    @field:SerializedName("refreshToken")
-    val refreshToken: String? = null,
+data class ResponseRegister(
 
     @field:SerializedName("message")
     val message: String? = null,

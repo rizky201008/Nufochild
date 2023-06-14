@@ -27,4 +27,7 @@
     <string name="carbohydrates">Karbohidrat</string>
     <string name="detecting">mendeteksi...</string>
     <string name="label_gender">Jenis Kelamin</string>
+    <string name="passMinLen">Panjang minimum </string>
+    <string name="emailInvalid">Email invalid </string>
+    <string name="loginError">Gagal masuk silahkan cek kembali email atau password anda</string>
 </resources>

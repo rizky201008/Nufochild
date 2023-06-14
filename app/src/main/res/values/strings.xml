@@ -27,4 +27,7 @@
     <string name="carbohydrates">Carbohydrates</string>
     <string name="title_activity_camera" translatable="false">CameraActivity</string>
     <string name="detecting">detecting...</string>
+    <string name="passMinLen">Minimum length is </string>
+    <string name="emailInvalid">Email invalid </string>
+    <string name="loginError">Login failed please check your email and password</string>
 </resources>

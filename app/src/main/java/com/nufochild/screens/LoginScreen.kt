@@ -52,9 +52,18 @@ import org.koin.androidx.compose.getViewModel
 fun LoginScreen(navController: NavHostController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel = getViewModel<MainViewModel>()
-
     val showLoading = viewModel.showLoading.collectAsState()
+    val emailError = viewModel.emailError.collectAsState()
+    val passwordError = viewModel.passwordError.collectAsState()
     val isLoading = showLoading.value
+    val isEmailError = emailError.value
+    val isPasswordError = passwordError.value
+    val loginSuccess = viewModel.loginSuccess.collectAsState()
+    val isLoginSuccess = loginSuccess.value
+    val emailErrMsg = viewModel.emailErrMsg.collectAsState()
+    val passErrMsg = viewModel.passErrMsg.collectAsState()
+    val emailErrTxt = emailErrMsg.value
+    val passErrTxt = passErrMsg.value
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -84,14 +93,18 @@ fun LoginScreen(navController: NavHostController) {
                 onChange = { email = it },
                 label = stringResource(id = R.string.label_email),
                 placeholder = stringResource(id = R.string.hint_email),
-                type = KeyboardType.Email
+                type = KeyboardType.Email,
+                isError = isEmailError,
+                errorText = emailErrTxt
             )
             InputFields(
                 value = password,
                 onChange = { password = it },
                 label = stringResource(id = R.string.label_password),
                 placeholder = stringResource(id = R.string.hint_password),
-                type = KeyboardType.Password
+                type = KeyboardType.Password,
+                isError = isPasswordError,
+                errorText = passErrTxt
             )
 
             Spacer(modifier = Modifier.height(100.dp))
@@ -100,20 +113,16 @@ fun LoginScreen(navController: NavHostController) {
                 CircularProgressIndicator(
                     modifier = Modifier.padding(10.dp),
                     color = Yellow700,
-                    strokeWidth = 10.dp
+                    strokeWidth = 5.dp
                 )
             } else {
-                val loginSuccess = viewModel.loginSuccess.collectAsState()
-                val isLoginSuccess = loginSuccess.value
                 MyButton(
                     onClick = {
-                        if (email.isNotEmpty() && password.isNotEmpty()) {
-                            viewModel.login(RequestLogin(password, email))
-                            if (isLoginSuccess) {
-                                keyboardController?.hide()
-                                navController.popBackStack()
-                                navController.navigate(Destination.Home.route)
-                            }
+                        viewModel.login(RequestLogin(password, email))
+                        if (isLoginSuccess) {
+                            keyboardController?.hide()
+                            navController.popBackStack()
+                            navController.navigate(Destination.Home.route)
                         }
                     },
                     text = stringResource(id = R.string.login),

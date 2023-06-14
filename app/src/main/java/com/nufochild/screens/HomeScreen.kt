@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.nufochild.Destination
 import com.nufochild.R
 import com.nufochild.ui.components.CardVideoList
 import com.nufochild.ui.components.TopBarMain
@@ -221,7 +222,9 @@ fun HomeScreen(
             items(videos) {
                 CardVideoList(
                     modifier = Modifier
-                        .clickable { },
+                        .clickable {
+                            navController.navigate(route = Destination.Video.setID(it.url))
+                        },
                     image = it.image,
                     title = it.title
                 )
