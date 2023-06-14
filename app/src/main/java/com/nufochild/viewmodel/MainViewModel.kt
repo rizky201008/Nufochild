@@ -13,10 +13,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nufochild.data.general.Food
-import com.nufochild.data.general.Video
+import com.nufochild.data.general.ResponseVideoItem
 import com.nufochild.data.request.RequestLogin
 import com.nufochild.data.request.RequestRegister
 import com.nufochild.data.response.FoodsItem
+import com.nufochild.data.response.ResponseDetailUser
 import com.nufochild.repository.MainRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,12 +26,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val repository: MainRepository,
 ) : ViewModel() {
-    private val _videoData = MutableStateFlow<List<Video>?>(null)
-    val videoData: MutableStateFlow<List<Video>?> get() = _videoData
-    fun getVideo() {
-        val videos = repository.getVideos()
-        _videoData.value = videos
-    }
+    private val _response_videoData = MutableStateFlow<List<ResponseVideoItem>?>(null)
+    val responseVideoData: StateFlow<List<ResponseVideoItem>?> get() = _response_videoData
 
     var isDialogShown by mutableStateOf(false)
         private set
@@ -43,17 +40,14 @@ class MainViewModel(
         isDialogShown = false
     }
 
-    private val _sortedFoods = MutableStateFlow(
-        repository.getFood()
-            .sortedBy { it.nama }
-    )
+    private val _foods = MutableStateFlow<List<FoodsItem>>(emptyList())
 
-    val sortedFoods: MutableStateFlow<List<FoodsItem>> get() = _sortedFoods
+    val foods: StateFlow<List<FoodsItem>> get() = _foods
 
     private val _foodData = MutableStateFlow<Food?>(null)
     val foodData: StateFlow<Food?> get() = _foodData
 
-    private val _showLoading = MutableStateFlow(false)
+    private val _showLoading = MutableStateFlow(true)
     val showLoading: StateFlow<Boolean> get() = _showLoading
 
     private val _emailError = MutableStateFlow(false)
@@ -82,6 +76,30 @@ class MainViewModel(
 
     private val _token = MutableStateFlow<String?>("")
     val token: StateFlow<String?> get() = _token
+
+    private val _detailUser = MutableStateFlow<ResponseDetailUser?>(null)
+    val detailUser: StateFlow<ResponseDetailUser?> get() = _detailUser
+
+    fun getFoods() {
+        _showLoading.value = true
+        viewModelScope.launch {
+            val data = repository.getFood()
+            _foods.value = data
+            _showLoading.value = false
+        }
+    }
+    fun getDetailUser() {
+        _showLoading.value = true
+        viewModelScope.launch {
+            val detailUser = repository.getProfile()
+            if (detailUser.success) {
+                _detailUser.value = detailUser
+                _showLoading.value = false
+            } else {
+
+            }
+        }
+    }
 
     fun setFood(food: Food) {
         _foodData.value = food
@@ -169,6 +187,14 @@ class MainViewModel(
             _emailError.value = true
             _passErrMsg.value = "This field is required!"
             _emailErrMsg.value = "This field is required!"
+        }
+    }
+    fun getVideo() {
+        _showLoading.value = true
+        viewModelScope.launch {
+            val videos = repository.getVideos()
+            _response_videoData.value = videos
+            _showLoading.value = false
         }
     }
 }

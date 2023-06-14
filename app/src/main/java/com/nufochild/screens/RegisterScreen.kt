@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -48,10 +47,8 @@ import com.nufochild.ui.theme.Yellow900
 import com.nufochild.viewmodel.MainViewModel
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegisterScreen(navController: NavHostController) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel = getViewModel<MainViewModel>()
     val showLoading = viewModel.showLoading.collectAsState()
     val emailError = viewModel.emailError.collectAsState()

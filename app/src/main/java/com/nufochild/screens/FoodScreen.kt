@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nufochild.R
-import com.nufochild.data.general.Food
 import com.nufochild.ui.components.CardFoodList
 import com.nufochild.ui.components.TopBarBackButton
 import com.nufochild.ui.customview.FoodDialog
@@ -42,7 +42,11 @@ fun FoodListScreen(
     navController: NavHostController,
 ) {
     val viewModel = getViewModel<MainViewModel>()
-    val foods by viewModel.sortedFoods.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.getFoods()
+    }
+    val foodss = viewModel.foods.collectAsState()
+    val foods = foodss.value
 
     Scaffold(
         topBar = {
@@ -67,21 +71,13 @@ fun FoodListScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(foods) {
                     CardFoodList(
-                        onClick = {
-                            viewModel.setFood(
-                                Food(
-                                    name = it.nama!!,
-                                    carbo = it.karbohidrat!!,
-                                    fiber = it.serat!!,
-                                    protein = it.protein!!,
-                                    fat = it.lemak!!,
-                                    energy = it.energi!!
-                                )
-                            )
-                            viewModel.onPurchaseClick()
-                        },
                         onChecked = {},
-                        text = it.nama!!
+                        text = it.nama!!,
+                        protein = it.protein!!,
+                        energy = it.energi!!,
+                        fat = it.lemak!!,
+                        fiber = it.serat!!,
+                        carbohydrate = it.karbohidrat!!
                     )
                 }
             }

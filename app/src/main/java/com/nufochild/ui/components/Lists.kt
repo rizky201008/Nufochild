@@ -21,28 +21,38 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.nufochild.R
 import com.nufochild.ui.theme.Black
+import com.nufochild.ui.theme.NufochildTheme
+import com.nufochild.ui.theme.White
 import com.nufochild.ui.theme.Yellow200
 import com.nufochild.ui.theme.Yellow500
 
 @Composable
 fun CardFoodList(
     text: String = "Makanan Ringan",
-    onClick: () -> Unit,
+    protein: Int = 0,
+    carbohydrate: Int = 0,
+    fat: Int = 0,
+    energy: Int = 0,
+    fiber: Int = 0,
     onChecked: () -> Unit,
 ) {
     Card(
@@ -51,32 +61,68 @@ fun CardFoodList(
         ),
         modifier = Modifier
             .padding(5.dp)
-            .fillMaxWidth()
-            .clickable { onClick() },
+            .fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
-                .height(70.dp),
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            Text(
-                text = text,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start,
-                fontSize = 25.sp,
-                modifier = Modifier.fillMaxWidth(0.7f)
-            )
+            Column(modifier = Modifier.fillMaxWidth(0.7f)) {
+                Text(
+                    text = text,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start,
+                    fontSize = 25.sp,
+                    modifier = Modifier
+                )
+
+                Text(
+                    text = stringResource(id = R.string.protein) + " " + protein,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                )
+                Text(
+                    text = stringResource(id = R.string.energy) + " " + energy,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                )
+                Text(
+                    text = stringResource(id = R.string.fat) + " " + fat,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                )
+                Text(
+                    text = stringResource(id = R.string.fiber) + " " + fiber,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                )
+                Text(
+                    text = stringResource(id = R.string.carbohydrates) + " " + carbohydrate,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    fontSize = 15.sp,
+                    modifier = Modifier
+                )
+            }
 
             Image(painter = painterResource(id = R.drawable.ic_done),
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
-                    .clickable { onChecked() }
                     .background(color = Color.White, shape = CircleShape)
+                    .clickable { onChecked() }
                     .padding(10.dp))
         }
     }
@@ -173,10 +219,39 @@ fun CardDetailUserList(
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = false)
-//@Composable
-//fun CardsPreview() {
-//    NufochildTheme {
-//        CardVideoList(modifier = Modifier.clickable { })
-//    }
-//}
+@Composable
+fun CardNutritionProgress(
+    progressValue: String,
+    progress: Float,
+    title: String,
+) {
+    Text(
+        text = title,
+        color = White,
+        fontSize = 15.sp
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(30.dp)
+                .clip(shape = RoundedCornerShape(10.dp)),
+            progress = progress,
+            color = Yellow500,
+            trackColor = White
+        )
+        Text(text = "$progressValue%", color = White, fontSize = 10.sp)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = false)
+@Composable
+fun CardsPreview() {
+    NufochildTheme {
+        CardFoodList(onChecked = {})
+    }
+}

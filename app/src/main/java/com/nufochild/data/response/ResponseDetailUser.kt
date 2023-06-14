@@ -10,21 +10,25 @@ import com.google.gson.annotations.SerializedName
 
 data class ResponseDetailUser(
 
-	@field:SerializedName("gender")
-	val gender: String? = null,
+    @field:SerializedName("gender")
+    val gender: String? = "Undefined",
 
-	@field:SerializedName("name")
-	val name: String? = null,
+    @field:SerializedName("name")
+    val name: String? = "",
 
-	@field:SerializedName("weight")
-	val weight: Int? = null,
+    @field:SerializedName("weight")
+    val weight: Int? = 0,
 
-	@field:SerializedName("userId")
-	val userId: String? = null,
+    @field:SerializedName("userId")
+    val userId: String? = "abcdefg",
 
-	@field:SerializedName("age")
-	val age: Int? = null,
+    @field:SerializedName("age")
+    val age: Int? = 0,
 
-	@field:SerializedName("height")
-	val height: Int? = null
+    @field:SerializedName("height")
+    val height: Int? = 0,
+
+    val message: String? = null,
+
+    val success: Boolean = true
 )

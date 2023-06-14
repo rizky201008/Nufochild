@@ -1,16 +1,21 @@
 package com.nufochild
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -26,6 +31,7 @@ import com.nufochild.screens.SettingScreen
 import com.nufochild.screens.SplashScreen
 import com.nufochild.screens.VideoScreen
 import com.nufochild.ui.theme.NufochildTheme
+import com.nufochild.ui.theme.Yellow700
 
 const val VIDEO_ID = "id"
 
@@ -37,7 +43,7 @@ sealed class Destination(val route: String) {
     object Foods : Destination("foods")
     object Setting : Destination("setting")
     object Video : Destination("video/{$VIDEO_ID}") {
-        fun setID(id: String): String {
+        fun setID(id: String = ""): String {
             return this.route.replace(oldValue = "{$VIDEO_ID}", newValue = id)
         }
     }
@@ -100,4 +106,21 @@ fun toCamera(context: Context) {
 
 fun showToast(ctx: Context, msg: String) {
     Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+}
+
+@Composable
+fun showLoading() {
+    CircularProgressIndicator(
+        modifier = Modifier.padding(10.dp),
+        color = Yellow700,
+        strokeWidth = 5.dp
+    )
+}
+
+@Composable
+fun PortraitOrientation(
+    context: Context,
+) {
+    val activity = context as Activity
+    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 }
