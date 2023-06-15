@@ -3,31 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera.any"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:allowBackup="true"
         android:name=".MainApp"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_transparan"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_transparan"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nufochild"
         tools:targetApi="31">
         <activity
             android:name=".CameraActivity"
-            android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_camera"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Nufochild" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Nufochild">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
