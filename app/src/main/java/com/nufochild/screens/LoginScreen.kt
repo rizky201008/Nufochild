@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,9 +56,7 @@ fun LoginScreen(navController: NavHostController) {
     val passErrMsg = viewModel.passErrMsg.collectAsState()
     val emailErrTxt = emailErrMsg.value
     val passErrTxt = passErrMsg.value
-    LaunchedEffect(Unit) {
-        viewModel.setProfileStatus(false)
-    }
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 

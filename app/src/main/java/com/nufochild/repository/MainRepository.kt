@@ -51,14 +51,24 @@ class MainRepository(
     suspend fun insertUserDetail(profile: RequestUpdateProfile): Nutrition {
         val apiServices = ApiServices.getInstance()
         val token = getToken()
-        val response = apiServices.updateProfile("Bearer $token", profile)
-        Log.i("xxxnc", "insertUserDetail $response")
+
         return try {
-            if (response.isSuccessful) {
-                response.body()?.nutrition!!
+            if (getProfileStatus()) {
+                val response = apiServices.updateProfile("Bearer $token", profile)
+                if (response.isSuccessful) {
+                    response.body()?.nutrition!!
+                } else {
+                    Nutrition(error = true)
+                }
             } else {
-                Nutrition(error = true)
+                val response = apiServices.newProfile("Bearer $token", profile)
+                if (response.isSuccessful) {
+                    response.body()?.nutrition!!
+                } else {
+                    Nutrition(error = true)
+                }
             }
+
         } catch (e: Exception) {
             Log.i("xxxnc", "Error update profile $e")
             Nutrition(error = true)
@@ -109,7 +119,7 @@ class MainRepository(
         val bearerToken = "Bearer $token"
         return try {
             val response = apiServices.profile(bearerToken)
-            Log.i("xxxncRepo", "getDetail $response")
+            Log.i("xxxnc", "getDetail $response")
             if (response.isSuccessful) {
                 response.body()!!
             } else {

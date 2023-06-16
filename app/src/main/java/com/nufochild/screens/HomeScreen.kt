@@ -59,9 +59,9 @@ fun HomeScreen(
     PortraitOrientation(context = ctx)
     val viewModel = getViewModel<MainViewModel>()
 
-
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.getVideo()
+        viewModel.getNutrition()
     }
 
     val responseVideoData = viewModel.responseVideoData.collectAsState()
@@ -69,27 +69,6 @@ fun HomeScreen(
     var videoId by remember {
         mutableStateOf("")
     }
-
-    val energy by remember {
-        mutableStateOf(0f)
-    }
-    val energyvalue: Int = (energy * 100).toInt()
-    val protein by remember {
-        mutableStateOf(0f)
-    }
-    val proteinvalue: Int = (protein * 100).toInt()
-    val fat by remember {
-        mutableStateOf(0f)
-    }
-    val fatvalue: Int = (fat * 100).toInt()
-    val fiber by remember {
-        mutableStateOf(0f)
-    }
-    val fibervalue: Int = (fiber * 100).toInt()
-    val carbohydrate by remember {
-        mutableStateOf(0f)
-    }
-    val carbohydratevalue: Int = (carbohydrate * 100).toInt()
 
     Scaffold(topBar = {
         TopBarMain(navController)
@@ -136,6 +115,21 @@ fun HomeScreen(
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp
                     )
+                    val energy = viewModel.energy
+                    val energyvalue = viewModel.venergy
+
+                    val protein = viewModel.protein
+                    val proteinvalue = viewModel.vprotein
+
+                    val fat = viewModel.fat
+                    val fatvalue = viewModel.vfat
+
+                    val fiber = viewModel.fiber
+                    val fibervalue = viewModel.vfiber
+
+                    val carbohydrate = viewModel.carbohydrates
+                    val carbohydratevalue = viewModel.vcarbohydrates
+
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -42,6 +42,7 @@ import org.koin.androidx.compose.getViewModel
 fun UpdateProfileScreen(navHostController: NavHostController) {
     val viewModel = getViewModel<MainViewModel>()
     val context = LocalContext.current
+    val updateSuccess = viewModel.isUpdateSuccess
     var age by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
@@ -152,6 +153,21 @@ fun UpdateProfileScreen(navHostController: NavHostController) {
             },
             title = { Text(text = "Oops") },
             text = { Text(text = stringResource(id = R.string.update_failed)) }
+        )
+    }
+    if (updateSuccess) {
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissDialog() },
+            confirmButton = {
+                Button(
+                    onClick = { navHostController.navigateUp() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Ok")
+                }
+            },
+            title = { Text(text = "Yeah!") },
+            text = { Text(text = stringResource(id = R.string.update_success)) }
         )
     }
 }

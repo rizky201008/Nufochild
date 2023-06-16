@@ -37,4 +37,5 @@
     <string name="dismiss">Abaikan</string>
     <string name="back">Kembali</string>
     <string name="update_failed">Update data gagal</string>
+    <string name="update_success">Update berhasil</string>
 </resources>

@@ -26,6 +26,7 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 
 interface ApiServices {
@@ -53,7 +54,7 @@ interface ApiServices {
     @Headers("Accept: application/json")
     suspend fun meals(): Response<List<FoodsItem>>
 
-    @POST("profil")
+    @PUT("profil")
     suspend fun updateProfile(
         @Header("Authorization") token: String,
         @Body() body: RequestUpdateProfile
@@ -63,7 +64,7 @@ interface ApiServices {
     suspend fun newProfile(
         @Header("Authorization") token: String,
         @Body() body: RequestUpdateProfile
-    )
+    ): Response<ResponseUpdateProfile>
 
     @Multipart
     @POST("upload")

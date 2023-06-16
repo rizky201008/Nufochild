@@ -51,7 +51,7 @@ class MainViewModel(
 
     var isEmailError by mutableStateOf(false)
         private set
-    var isUpdateError by mutableStateOf(false)
+    var isUpdateSuccess by mutableStateOf(false)
         private set
     var isNameError by mutableStateOf(false)
         private set
@@ -79,7 +79,83 @@ class MainViewModel(
     private val _detailUser = MutableStateFlow<ResponseDetailUser?>(null)
     val detailUser: StateFlow<ResponseDetailUser?> get() = _detailUser
 
-    fun getNutrition(): List<UserNutritions?> = repository.getNutrition()
+    var protein by mutableStateOf(0f)
+        private set
+    var vprotein by mutableStateOf(0)
+        private set
+    var fat by mutableStateOf(0f)
+        private set
+    var vfat by mutableStateOf(0)
+        private set
+    var energy by mutableStateOf(0f)
+        private set
+    var venergy by mutableStateOf(0)
+        private set
+    var fiber by mutableStateOf(0f)
+        private set
+    var vfiber by mutableStateOf(0)
+        private set
+    var carbohydrates by mutableStateOf(0f)
+        private set
+    var vcarbohydrates by mutableStateOf(0)
+        private set
+
+    fun getUpdated(): Boolean = repository.getProfileStatus()
+    fun setUpdated(value: Boolean) = repository.setProfileStatus(value)
+
+    fun getNutrition() {
+        Log.i("xxxnc", "getNutrition")
+        val data = repository.getNutrition()
+        if (data.isEmpty()) {
+
+        } else {
+            val dd1 = data[0]?.protein!!
+            val d1 = data[0]?.vprotein!!
+            val progress1 = d1
+            val valueMax1 = dd1
+            val percentage1 = (progress1 / valueMax1) * 100
+            val roundedPercentage1 = Math.round(percentage1)
+            protein = roundedPercentage1 / 100f
+            vprotein = roundedPercentage1
+
+            val dd2 = data[0]?.fat!!
+            val d2 = data[0]?.vfat!!
+            val progress2 = d2
+            val valueMax2 = dd2
+            val percentage2 = (progress2 / valueMax2) * 100
+            val roundedPercentage2 = Math.round(percentage2)
+            fat = roundedPercentage2 / 100f
+            vfat = roundedPercentage2
+
+            val dd3 = data[0]?.energy!!
+            val d3 = data[0]?.venergy!!
+            val progress3 = d3
+            val valueMax3 = dd3
+            val percentage3 = (progress3 / valueMax3) * 100
+            val roundedPercentage3 = Math.round(percentage3)
+            energy = roundedPercentage3 / 100f
+            venergy = roundedPercentage3
+
+            val dd4 = data[0]?.carbohydrate!!
+            val d4 = data[0]?.vcarbohydrate!!
+            val progress4 = d4
+            val valueMax4 = dd4
+            val percentage4 = (progress4 / valueMax4) * 100
+            val roundedPercentage4 = Math.round(percentage4)
+            carbohydrates = roundedPercentage4 / 100f
+            vcarbohydrates = roundedPercentage4
+
+            val dd5 = data[0]?.fiber!!
+            val d5 = data[0]?.vfiber!!
+            val progress5 = d5
+            val valueMax5 = dd5
+            val percentage5 = (progress5 / valueMax5) * 100
+            val roundedPercentage5 = Math.round(percentage5)
+            fiber = roundedPercentage5 / 100f
+            vfiber = roundedPercentage5
+
+        }
+    }
 
     fun insertNutrition(nutritions: UserNutritions) {
         repository.insertNutrition(nutritions)
@@ -98,9 +174,10 @@ class MainViewModel(
         isLoading = true
         viewModelScope.launch {
             val detail = repository.getProfile()
-            Log.i("xxxnc","getDetailVm $detail")
+            Log.i("xxxnc", "getDetailVm $detail")
             if (detail!!.success) {
                 _detailUser.value = detail
+                setUpdated(true)
                 isLoading = false
             } else {
                 isLoading = false
@@ -115,13 +192,6 @@ class MainViewModel(
         return repository.getToken()
         Log.i("xxxnc", "getToken VM $token")
     }
-
-    fun setProfileStatus(value: Boolean) = repository.setProfileStatus(value)
-
-//    fun getNutritionStatus() {
-//        Log.i("xxxnc", "VM getNutritionStatus")
-//        nutritionStatus = repository.getProfileStatus()
-//    }
 
     fun register(value: RequestRegister) {
         isLoading = true
@@ -224,6 +294,8 @@ class MainViewModel(
             val data = repository.insertUserDetail(value)
             isLoading = false
             if (!data.error) {
+                isUpdateSuccess = true
+                setUpdated(true)
                 insertNutrition(
                     UserNutritions(
                         null,

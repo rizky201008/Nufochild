@@ -25,6 +25,6 @@ interface NutritionDao {
     @Delete
     fun delete(nutrition: UserNutritions)
 
-    @Query("SELECT * from nutrition ORDER BY id ASC")
+    @Query("SELECT * FROM nutrition ORDER BY id DESC LIMIT 1")
     fun getAllNutrition(): List<UserNutritions?>
 }
