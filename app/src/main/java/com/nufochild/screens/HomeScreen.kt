@@ -59,9 +59,17 @@ fun HomeScreen(
     PortraitOrientation(context = ctx)
     val viewModel = getViewModel<MainViewModel>()
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(Unit) {
         viewModel.getVideo()
+    }
+    LaunchedEffect(Unit) {
         viewModel.getNutrition()
+    }
+    LaunchedEffect(Unit) {
+        val status = viewModel.getUpdated()
+        if (!status){
+            viewModel.showDialog()
+        }
     }
 
     val responseVideoData = viewModel.responseVideoData.collectAsState()
@@ -82,15 +90,10 @@ fun HomeScreen(
             item {
                 if (viewModel.isDialogShown) {
                     AlertDialog(
-                        onDismissRequest = { viewModel.dismissDialog() },
+                        onDismissRequest = {  },
                         confirmButton = {
-                            Button(onClick = { navController.navigate(Destination.UpdateProfile.route) }) {
+                            Button(onClick = { navController.navigate(Destination.Setting.route) }) {
                                 Text(text = "Ok")
-                            }
-                        },
-                        dismissButton = {
-                            Button(onClick = { viewModel.dismissDialog() }) {
-                                Text(text = stringResource(id = R.string.dismiss))
                             }
                         },
                         title = { Text(text = "Oops") },

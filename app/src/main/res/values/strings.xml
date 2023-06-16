@@ -34,9 +34,11 @@
     <string name="foodChecked">Nutrition added successfully</string>
     <string name="loginError">Login failed please check your email and password</string>
     <string name="update">Update</string>
-    <string name="update_your_profile">Before see your daily nutrition score you must edit your profile</string>
+    <string name="update_your_profile">Before see your daily nutrition score you must edit your profile and re-open the app</string>
     <string name="dismiss">Dismiss</string>
     <string name="back">Back</string>
     <string name="update_failed">Update data failed!</string>
     <string name="update_success">Update Success!</string>
+    <string name="titleErrorDialog">Error</string>
+    <string name="registerError">Register Error</string>
 </resources>

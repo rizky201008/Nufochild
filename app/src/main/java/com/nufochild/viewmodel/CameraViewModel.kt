@@ -39,7 +39,7 @@ class CameraViewModel(private val repository: CameraRepository) : ViewModel() {
                 isError = 1
                 _foodData.value =
                     Food(
-                        response[0]?.nama,
+                        response[0]?.nama?:"",
                         response[0]?.karbohidrat,
                         response[0]?.serat,
                         response[0]?.lemak,

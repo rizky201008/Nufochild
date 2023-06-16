@@ -59,7 +59,11 @@ class MainViewModel(
         private set
     var isRegister by mutableStateOf(false)
         private set
+    var isRegisterFail by mutableStateOf(false)
+        private set
     var isLogin by mutableStateOf(false)
+        private set
+    var isLoginFail by mutableStateOf(false)
         private set
     var isProfileStatuses by mutableStateOf(false)
         private set
@@ -211,11 +215,6 @@ class MainViewModel(
                 isLoading = false
                 isRegister = false
                 _nameErrMsg.value = "Name length minimum 3 character"
-            } else if (value.password != value.password2) {
-                isLoading = false
-                isPasswordError = true
-                isRegister = false
-                _passErrMsg.value = "Confirm password doesn't match"
             } else {
                 viewModelScope.launch {
                     val response = repository.registerAccount(value)
@@ -228,6 +227,7 @@ class MainViewModel(
                     } else {
                         isPasswordError = false
                         isEmailError = false
+                        showDialog()
                         isRegister = true
                     }
                 }
@@ -263,6 +263,7 @@ class MainViewModel(
                     } else {
                         isLoading = false
                         isPasswordError = false
+                        showDialog()
                         isEmailError = false
                         isLogin = false
                     }
@@ -315,5 +316,15 @@ class MainViewModel(
                 showDialog()
             }
         }
+    }
+
+    fun updateNutritionValue(
+        protein: Float,
+        energy: Float,
+        fat: Float,
+        fiber: Float,
+        carbohydrate: Float
+    ) {
+        repository.updateNutrition(protein, energy, fat, fiber, carbohydrate)
     }
 }

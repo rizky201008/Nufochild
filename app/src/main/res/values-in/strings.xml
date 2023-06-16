@@ -33,9 +33,11 @@
     <string name="update">Ubah</string>
     <string name="image_cannot_detected">Gambar tidak terdeteksi</string>
     <string name="loginError">Gagal masuk silahkan cek kembali email atau password anda</string>
-    <string name="update_your_profile">Sebelum melihat skor nutrisi harian kamu harus update profil</string>
+    <string name="update_your_profile">Sebelum melihat skor nutrisi harian kamu harus update profil dan buka ulang aplikasi</string>
     <string name="dismiss">Abaikan</string>
     <string name="back">Kembali</string>
     <string name="update_failed">Update data gagal</string>
     <string name="update_success">Update berhasil</string>
+    <string name="titleErrorDialog">Error</string>
+    <string name="registerError">Pendaftaran gagal!</string>
 </resources>

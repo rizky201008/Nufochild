@@ -156,6 +156,7 @@ fun UpdateProfileScreen(navHostController: NavHostController) {
         )
     }
     if (updateSuccess) {
+        viewModel.setUpdated(true)
         AlertDialog(
             onDismissRequest = { viewModel.dismissDialog() },
             confirmButton = {

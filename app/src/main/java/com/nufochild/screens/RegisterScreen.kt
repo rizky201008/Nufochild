@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,7 +61,6 @@ fun RegisterScreen(navController: NavHostController) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -108,15 +109,6 @@ fun RegisterScreen(navController: NavHostController) {
                 isError = viewModel.isPasswordError,
                 errorText = passErrTxt
             )
-            InputFields(
-                value = confirmPassword,
-                onChange = { confirmPassword = it },
-                label = stringResource(id = R.string.label_cpassword),
-                placeholder = stringResource(id = R.string.hint_password),
-                type = KeyboardType.Password,
-                isError = viewModel.isPasswordError,
-                errorText = passErrTxt
-            )
 
             Spacer(modifier = Modifier.height(100.dp))
 
@@ -134,6 +126,19 @@ fun RegisterScreen(navController: NavHostController) {
                     text = stringResource(id = R.string.register),
                     color = Yellow700,
                     textColor = Color.White
+                )
+            }
+
+            if (viewModel.isDialogShown){
+                AlertDialog(
+                    onDismissRequest = { viewModel.dismissDialog() },
+                    confirmButton = {
+                        Button(onClick = { viewModel.dismissDialog() }) {
+                            Text(text = "Ok")
+                        }
+                    },
+                    title = { Text(text = stringResource(id = R.string.titleErrorDialog)) },
+                    text = { Text(text = stringResource(id = R.string.registerError)) }
                 )
             }
 

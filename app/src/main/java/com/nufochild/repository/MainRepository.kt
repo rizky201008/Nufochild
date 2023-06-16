@@ -48,6 +48,24 @@ class MainRepository(
         executorService.execute { nutritionDao.insert(nutrition) }
     }
 
+    fun updateNutrition(
+        protein: Float,
+        energy: Float,
+        fat: Float,
+        fiber: Float,
+        carbohydrate: Float
+    ) {
+        executorService.execute {
+            nutritionDao.updateNutritionValue(
+                vprotein = protein,
+                venergy = energy,
+                vfat = fat,
+                vfiber = fiber,
+                vcarbohydrate = carbohydrate
+            )
+        }
+    }
+
     suspend fun insertUserDetail(profile: RequestUpdateProfile): Nutrition {
         val apiServices = ApiServices.getInstance()
         val token = getToken()

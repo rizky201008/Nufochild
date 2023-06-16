@@ -27,4 +27,14 @@ interface NutritionDao {
 
     @Query("SELECT * FROM nutrition ORDER BY id DESC LIMIT 1")
     fun getAllNutrition(): List<UserNutritions?>
+
+    @Query("UPDATE nutrition SET vprotein = vprotein + :vprotein, venergy = venergy + :venergy,    vfat = vfat + :vfat,    vfiber = vfiber + :vfiber,    vcarbohydrate = vcarbohydrate + :vcarbohydrate WHERE id = (SELECT MAX(id) FROM nutrition)")
+    fun updateNutritionValue(
+        vprotein: Float,
+        venergy: Float,
+        vfat: Float,
+        vfiber: Float,
+        vcarbohydrate: Float
+    )
+
 }

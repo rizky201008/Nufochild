@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,8 +65,11 @@ fun LoginScreen(navController: NavHostController) {
 
     if (viewModel.isLogin) {
         keyboardController?.hide()
-        navController.popBackStack()
-        navController.navigate(Destination.Home.route)
+        LaunchedEffect(Unit) {
+            navController.navigate(Destination.Home.route) {
+                popUpTo(Destination.Home.route)
+            }
+        }
     }
 
     Box(
@@ -121,6 +127,19 @@ fun LoginScreen(navController: NavHostController) {
                     text = stringResource(id = R.string.login),
                     color = Yellow700,
                     textColor = Color.White
+                )
+            }
+
+            if (viewModel.isDialogShown){
+                AlertDialog(
+                    onDismissRequest = { viewModel.dismissDialog() },
+                    confirmButton = {
+                        Button(onClick = { viewModel.dismissDialog() }) {
+                            Text(text = "Ok")
+                        }
+                    },
+                    title = { Text(text = stringResource(id = R.string.titleErrorDialog)) },
+                    text = { Text(text = stringResource(id = R.string.loginError)) }
                 )
             }
 
