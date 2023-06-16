@@ -8,34 +8,25 @@ package com.nufochild.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Foods(
-
-    @field:SerializedName("Foods")
-    val foods: List<FoodsItem?>? = null,
-)
-
 data class FoodsItem(
 
-    @field:SerializedName("Lemak")
-    val lemak: Int? = null,
+    @field:SerializedName("Lemak_g")
+    val lemak: Float? = null,
 
-    @field:SerializedName("Serat")
-    val serat: Int? = null,
+    @field:SerializedName("Serat_g")
+    val serat: Float? = null,
 
     @field:SerializedName("Nama")
     val nama: String? = null,
 
-    @field:SerializedName("Energi")
-    val energi: Int? = null,
+    @field:SerializedName("Energi_Kal")
+    val energi: Float? = null,
 
-    @field:SerializedName("Karbohidrat")
-    val karbohidrat: Int? = null,
+    @field:SerializedName("Karbodhidrat_g")
+    val karbohidrat: Float? = null,
 
-    @field:SerializedName("ID")
-    val iD: Int? = null,
-
-    @field:SerializedName("Protein")
-    val protein: Int? = null,
+    @field:SerializedName("Protein_g")
+    val protein: Float? = null,
 
     val message: String? = null,
 

@@ -6,16 +6,18 @@
 
 package com.nufochild.viewmodel
 
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nufochild.data.general.Food
 import com.nufochild.data.general.ResponseVideoItem
+import com.nufochild.data.general.UserNutritions
 import com.nufochild.data.request.RequestLogin
 import com.nufochild.data.request.RequestRegister
+import com.nufochild.data.request.RequestUpdateProfile
 import com.nufochild.data.response.FoodsItem
 import com.nufochild.data.response.ResponseDetailUser
 import com.nufochild.repository.MainRepository
@@ -32,124 +34,140 @@ class MainViewModel(
     var isDialogShown by mutableStateOf(false)
         private set
 
-    fun onPurchaseClick() {
+    var isLoading by mutableStateOf(false)
+        private set
+
+    fun showDialog() {
         isDialogShown = true
     }
 
-    fun onDismissDialog() {
+    fun dismissDialog() {
         isDialogShown = false
     }
 
-    private val _foods = MutableStateFlow<List<FoodsItem>>(emptyList())
+    private val _foods = MutableStateFlow<List<FoodsItem>?>(emptyList())
 
-    val foods: StateFlow<List<FoodsItem>> get() = _foods
+    val foods: StateFlow<List<FoodsItem>?> get() = _foods
 
-    private val _foodData = MutableStateFlow<Food?>(null)
-    val foodData: StateFlow<Food?> get() = _foodData
+    var isEmailError by mutableStateOf(false)
+        private set
+    var isUpdateError by mutableStateOf(false)
+        private set
+    var isNameError by mutableStateOf(false)
+        private set
+    var isPasswordError by mutableStateOf(false)
+        private set
+    var isRegister by mutableStateOf(false)
+        private set
+    var isLogin by mutableStateOf(false)
+        private set
+    var isProfileStatuses by mutableStateOf(false)
+        private set
 
-    private val _showLoading = MutableStateFlow(true)
-    val showLoading: StateFlow<Boolean> get() = _showLoading
+    val _token = MutableStateFlow("")
+    val token: StateFlow<String> get() = _token
 
-    private val _emailError = MutableStateFlow(false)
-    val emailError: StateFlow<Boolean> get() = _emailError
-
-    private val _emailErrMsg = MutableStateFlow("")
+    val _emailErrMsg = MutableStateFlow("")
     val emailErrMsg: StateFlow<String> get() = _emailErrMsg
-
-    private val _passwordError = MutableStateFlow(false)
-    val passwordError: StateFlow<Boolean> get() = _passwordError
 
     private val _passErrMsg = MutableStateFlow("")
     val passErrMsg: StateFlow<String> get() = _passErrMsg
 
-    private val _nameError = MutableStateFlow(false)
-    val nameError: StateFlow<Boolean> get() = _nameError
-
     private val _nameErrMsg = MutableStateFlow("")
     val nameErrMsg: StateFlow<String> get() = _nameErrMsg
-
-    private val _loginSuccess = MutableStateFlow(false)
-    val loginSuccess: StateFlow<Boolean> get() = _loginSuccess
-
-    private val _registerSuccess = MutableStateFlow(false)
-    val registerSuccess: StateFlow<Boolean> get() = _registerSuccess
-
-    private val _token = MutableStateFlow<String?>("")
-    val token: StateFlow<String?> get() = _token
 
     private val _detailUser = MutableStateFlow<ResponseDetailUser?>(null)
     val detailUser: StateFlow<ResponseDetailUser?> get() = _detailUser
 
+    fun getNutrition(): List<UserNutritions?> = repository.getNutrition()
+
+    fun insertNutrition(nutritions: UserNutritions) {
+        repository.insertNutrition(nutritions)
+    }
+
     fun getFoods() {
-        _showLoading.value = true
+        isLoading = true
         viewModelScope.launch {
             val data = repository.getFood()
             _foods.value = data
-            _showLoading.value = false
+            isLoading = false
         }
     }
-    fun getDetailUser() {
-        _showLoading.value = true
-        viewModelScope.launch {
-            val detailUser = repository.getProfile()
-            if (detailUser.success) {
-                _detailUser.value = detailUser
-                _showLoading.value = false
-            } else {
 
+    fun getDetailUser() {
+        isLoading = true
+        viewModelScope.launch {
+            val detail = repository.getProfile()
+            Log.i("xxxnc","getDetailVm $detail")
+            if (detail!!.success) {
+                _detailUser.value = detail
+                isLoading = false
+            } else {
+                isLoading = false
+                showDialog()
+                isProfileStatuses = false
+                _detailUser.value = detail
             }
         }
     }
 
-    fun setFood(food: Food) {
-        _foodData.value = food
+    fun getToken(): String {
+        return repository.getToken()
+        Log.i("xxxnc", "getToken VM $token")
     }
 
-    fun getToken() {
-        val token = repository.getToken()
-        _token.value = token
-    }
+    fun setProfileStatus(value: Boolean) = repository.setProfileStatus(value)
+
+//    fun getNutritionStatus() {
+//        Log.i("xxxnc", "VM getNutritionStatus")
+//        nutritionStatus = repository.getProfileStatus()
+//    }
 
     fun register(value: RequestRegister) {
-        _showLoading.value = true
+        isLoading = true
         if (value.name!!.isNotEmpty() && value.email!!.isNotEmpty() && value.password2!!.isNotEmpty() && value.password!!.isNotEmpty()) {
             if (!Patterns.EMAIL_ADDRESS.matcher(value.email).matches()) {
-                _showLoading.value = false
-                _emailError.value = true
+                isLoading = false
+                isRegister = false
+                isEmailError = true
                 _emailErrMsg.value = "Email is invalid"
-            } else if (value.password!!.length < 8) {
-                _showLoading.value = false
+            } else if (value.password.length < 8) {
+                isLoading = false
+                isRegister = false
                 _passErrMsg.value = "Password length minimum 8 character"
-                _passwordError.value = true
-            } else if (value.name!!.length < 3) {
-                _nameError.value = true
-                _showLoading.value = false
+                isPasswordError = true
+            } else if (value.name.length < 3) {
+                isNameError = true
+                isLoading = false
+                isRegister = false
                 _nameErrMsg.value = "Name length minimum 3 character"
-            } else if (value!!.password != value!!.password2) {
-                _showLoading.value = false
-                _passwordError.value = true
+            } else if (value.password != value.password2) {
+                isLoading = false
+                isPasswordError = true
+                isRegister = false
                 _passErrMsg.value = "Confirm password doesn't match"
             } else {
                 viewModelScope.launch {
                     val response = repository.registerAccount(value)
+                    isLoading = false
                     if (response.success) {
-                        _showLoading.value = false
-                        _passwordError.value = false
-                        _emailError.value = false
-                        _registerSuccess.value = true
+                        isPasswordError = false
+                        isEmailError = false
+                        isRegister = true
+
                     } else {
-                        _showLoading.value = false
-                        _passwordError.value = false
-                        _emailError.value = false
-                        _registerSuccess.value = false
+                        isPasswordError = false
+                        isEmailError = false
+                        isRegister = true
                     }
                 }
             }
         } else {
-            _showLoading.value = false
-            _passwordError.value = true
-            _emailError.value = true
-            _nameError.value = true
+            isLoading = false
+            isPasswordError = true
+            isEmailError = true
+            isNameError = true
+            isRegister = false
             _passErrMsg.value = "This field is required!"
             _nameErrMsg.value = "This field is required!"
             _emailErrMsg.value = "This field is required!"
@@ -157,44 +175,73 @@ class MainViewModel(
     }
 
     fun login(value: RequestLogin) {
-        _showLoading.value = true
+        isLoading = true
         if (value.email!!.isNotEmpty() && value.password!!.isNotEmpty()) {
             if (!Patterns.EMAIL_ADDRESS.matcher(value.email).matches()) {
-                _loginSuccess.value = false
-                _showLoading.value = false
-                _emailError.value = true
+                isLogin = false
+                isLoading = false
+                isEmailError = true
                 _emailErrMsg.value = "Email is invalid"
             } else {
                 viewModelScope.launch {
                     val response = repository.loginAccount(value)
                     if (response.success) {
-                        _showLoading.value = false
-                        _passwordError.value = false
-                        _emailError.value = false
-                        _loginSuccess.value = true
+                        isLoading = false
+                        isPasswordError = false
+                        isEmailError = false
+                        isLogin = true
                     } else {
-                        _showLoading.value = false
-                        _passwordError.value = false
-                        _emailError.value = false
-                        _loginSuccess.value = false
+                        isLoading = false
+                        isPasswordError = false
+                        isEmailError = false
+                        isLogin = false
                     }
                 }
             }
         } else {
-            _loginSuccess.value = false
-            _showLoading.value = false
-            _passwordError.value = true
-            _emailError.value = true
+            isLogin = false
+            isLoading = false
+            isPasswordError = true
+            isEmailError = true
             _passErrMsg.value = "This field is required!"
             _emailErrMsg.value = "This field is required!"
         }
     }
+
     fun getVideo() {
-        _showLoading.value = true
+        Log.i("xxxnc", "getVideo VM")
+        isLoading = true
         viewModelScope.launch {
             val videos = repository.getVideos()
             _response_videoData.value = videos
-            _showLoading.value = false
+            isLoading = false
+        }
+    }
+
+    fun updateDetail(value: RequestUpdateProfile) {
+        Log.i("xxxnc", "VM updateDetail")
+        viewModelScope.launch {
+            val data = repository.insertUserDetail(value)
+            isLoading = false
+            if (!data.error) {
+                insertNutrition(
+                    UserNutritions(
+                        null,
+                        data.protein,
+                        0f,
+                        data.energy,
+                        0f,
+                        data.fat,
+                        0f,
+                        data.fiber,
+                        0f,
+                        data.carbo,
+                        0f
+                    )
+                )
+            } else {
+                showDialog()
+            }
         }
     }
 }

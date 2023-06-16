@@ -7,10 +7,10 @@
 package com.nufochild.data.general
 
 data class Food(
-    val name: String,
-    val carbo: Int,
-    val fiber: Int,
-    val fat: Int,
-    val energy: Int,
-    val protein: Int,
+    val name: String? = "",
+    val carbo: Float? = 0f,
+    val fiber: Float? = 0f,
+    val fat: Float? = 0f,
+    val energy: Float? = 0f,
+    val protein: Float? = 0f,
 )

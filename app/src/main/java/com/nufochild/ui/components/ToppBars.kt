@@ -50,7 +50,9 @@ fun TopBarMain(navController: NavHostController) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
-                    .clickable { navController.navigate(Destination.Foods.route) }
+                    .clickable {
+                        navController.navigate(Destination.Foods.route)
+                    }
             )
             Image(
                 painter = painterResource(id = R.drawable.ic_camera),
@@ -72,7 +74,8 @@ fun TopBarMain(navController: NavHostController) {
 @Composable
 fun TopBarBackButton(
     onclick: () -> Unit,
-    title: String = ""
+    title: String = "",
+    actions: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -84,6 +87,9 @@ fun TopBarBackButton(
             }) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = null)
             }
+        },
+        actions = {
+            actions
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = Yellow700,

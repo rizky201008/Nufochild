@@ -48,11 +48,11 @@ import com.nufochild.ui.theme.Yellow500
 @Composable
 fun CardFoodList(
     text: String = "Makanan Ringan",
-    protein: Int = 0,
-    carbohydrate: Int = 0,
-    fat: Int = 0,
-    energy: Int = 0,
-    fiber: Int = 0,
+    protein: Float = 0f,
+    carbohydrate: Float = 0f,
+    fat: Float = 0f,
+    energy: Float = 0f,
+    fiber: Float = 0f,
     onChecked: () -> Unit,
 ) {
     Card(
@@ -68,7 +68,7 @@ fun CardFoodList(
                 .fillMaxWidth()
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             Column(modifier = Modifier.fillMaxWidth(0.7f)) {
@@ -174,48 +174,29 @@ fun CardVideoList(modifier: Modifier, image: String, title: String) {
 fun CardDetailUserList(
     text: String = "Example Content",
     title: String = "Example Title",
-    onChecked: () -> Unit,
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Yellow200, contentColor = Color.Black
         ),
         modifier = Modifier
-            .padding(5.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(5.dp),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .height(70.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Column(modifier = Modifier.fillMaxWidth(0.7f)) {
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start,
-                    fontSize = 12.sp,
-                )
-                Text(
-                    text = text,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start,
-                    fontSize = 25.sp,
-                )
-            }
-
-            Image(painter = painterResource(id = R.drawable.ic_android),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { onChecked() }
-                    .background(color = Color.White, shape = CircleShape)
-                    .padding(10.dp)
-            )
-        }
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(5.dp)
+        )
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Start,
+            fontSize = 25.sp,
+            modifier = Modifier.padding(5.dp)
+        )
     }
 }
 
@@ -252,6 +233,6 @@ fun CardNutritionProgress(
 @Composable
 fun CardsPreview() {
     NufochildTheme {
-        CardFoodList(onChecked = {})
+        CardDetailUserList()
     }
 }

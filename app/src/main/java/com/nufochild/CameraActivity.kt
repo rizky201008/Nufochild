@@ -70,7 +70,7 @@ class CameraActivity : ComponentActivity() {
                         DetectingImageScreen(
                             contentDescription = null,
                             onBackClicked = { finish() },
-                            painter = photoUri
+                            painter = photoUri,
                         )
                     }
                 }

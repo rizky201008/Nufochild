@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,21 +53,21 @@ import org.koin.androidx.compose.getViewModel
 fun LoginScreen(navController: NavHostController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel = getViewModel<MainViewModel>()
-    val showLoading = viewModel.showLoading.collectAsState()
-    val emailError = viewModel.emailError.collectAsState()
-    val passwordError = viewModel.passwordError.collectAsState()
-    val isLoading = showLoading.value
-    val isEmailError = emailError.value
-    val isPasswordError = passwordError.value
-    val loginSuccess = viewModel.loginSuccess.collectAsState()
-    val isLoginSuccess = loginSuccess.value
     val emailErrMsg = viewModel.emailErrMsg.collectAsState()
     val passErrMsg = viewModel.passErrMsg.collectAsState()
     val emailErrTxt = emailErrMsg.value
     val passErrTxt = passErrMsg.value
-
+    LaunchedEffect(Unit) {
+        viewModel.setProfileStatus(false)
+    }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    if (viewModel.isLogin) {
+        keyboardController?.hide()
+        navController.popBackStack()
+        navController.navigate(Destination.Home.route)
+    }
 
     Box(
         modifier = Modifier
@@ -94,7 +95,7 @@ fun LoginScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_email),
                 placeholder = stringResource(id = R.string.hint_email),
                 type = KeyboardType.Email,
-                isError = isEmailError,
+                isError = viewModel.isEmailError,
                 errorText = emailErrTxt
             )
             InputFields(
@@ -103,13 +104,13 @@ fun LoginScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_password),
                 placeholder = stringResource(id = R.string.hint_password),
                 type = KeyboardType.Password,
-                isError = isPasswordError,
+                isError = viewModel.isPasswordError,
                 errorText = passErrTxt
             )
 
             Spacer(modifier = Modifier.height(100.dp))
 
-            if (isLoading) {
+            if (viewModel.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.padding(10.dp),
                     color = Yellow700,
@@ -119,11 +120,6 @@ fun LoginScreen(navController: NavHostController) {
                 MyButton(
                     onClick = {
                         viewModel.login(RequestLogin(password, email))
-                        if (isLoginSuccess) {
-                            keyboardController?.hide()
-                            navController.popBackStack()
-                            navController.navigate(Destination.Home.route)
-                        }
                     },
                     text = stringResource(id = R.string.login),
                     color = Yellow700,

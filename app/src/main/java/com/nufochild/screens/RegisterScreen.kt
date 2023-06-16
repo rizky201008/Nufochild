@@ -24,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
@@ -50,16 +49,6 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun RegisterScreen(navController: NavHostController) {
     val viewModel = getViewModel<MainViewModel>()
-    val showLoading = viewModel.showLoading.collectAsState()
-    val emailError = viewModel.emailError.collectAsState()
-    val nameError = viewModel.nameError.collectAsState()
-    val passwordError = viewModel.passwordError.collectAsState()
-    val isLoading = showLoading.value
-    val isEmailError = emailError.value
-    val isNameError = nameError.value
-    val isPasswordError = passwordError.value
-    val registerSuccess = viewModel.registerSuccess.collectAsState()
-    val isRegisterSuccess = registerSuccess.value
     val emailErrMsg = viewModel.emailErrMsg.collectAsState()
     val passErrMsg = viewModel.passErrMsg.collectAsState()
     val nameErrMsg = viewModel.nameErrMsg.collectAsState()
@@ -98,7 +87,7 @@ fun RegisterScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_name),
                 placeholder = stringResource(id = R.string.hint_name),
                 type = KeyboardType.Text,
-                isError = isNameError,
+                isError = viewModel.isNameError,
                 errorText = nameErrTxt
             )
             InputFields(
@@ -107,7 +96,7 @@ fun RegisterScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_email),
                 placeholder = stringResource(id = R.string.hint_email),
                 type = KeyboardType.Email,
-                isError = isEmailError,
+                isError = viewModel.isEmailError,
                 errorText = emailErrTxt
             )
             InputFields(
@@ -116,7 +105,7 @@ fun RegisterScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_password),
                 placeholder = stringResource(id = R.string.hint_password),
                 type = KeyboardType.Password,
-                isError = isPasswordError,
+                isError = viewModel.isPasswordError,
                 errorText = passErrTxt
             )
             InputFields(
@@ -125,13 +114,13 @@ fun RegisterScreen(navController: NavHostController) {
                 label = stringResource(id = R.string.label_cpassword),
                 placeholder = stringResource(id = R.string.hint_password),
                 type = KeyboardType.Password,
-                isError = isPasswordError,
+                isError = viewModel.isPasswordError,
                 errorText = passErrTxt
             )
 
             Spacer(modifier = Modifier.height(100.dp))
 
-            if (isLoading){
+            if (viewModel.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.padding(10.dp),
                     color = Yellow700,
@@ -148,7 +137,7 @@ fun RegisterScreen(navController: NavHostController) {
                 )
             }
 
-            if (isRegisterSuccess) {
+            if (viewModel.isRegister) {
                 navController.navigateUp()
             }
 

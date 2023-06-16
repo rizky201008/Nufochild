@@ -29,6 +29,7 @@ import com.nufochild.screens.LoginScreen
 import com.nufochild.screens.RegisterScreen
 import com.nufochild.screens.SettingScreen
 import com.nufochild.screens.SplashScreen
+import com.nufochild.screens.UpdateProfileScreen
 import com.nufochild.screens.VideoScreen
 import com.nufochild.ui.theme.NufochildTheme
 import com.nufochild.ui.theme.Yellow700
@@ -42,6 +43,7 @@ sealed class Destination(val route: String) {
     object Login : Destination("login")
     object Foods : Destination("foods")
     object Setting : Destination("setting")
+    object UpdateProfile : Destination("update-profile")
     object Video : Destination("video/{$VIDEO_ID}") {
         fun setID(id: String = ""): String {
             return this.route.replace(oldValue = "{$VIDEO_ID}", newValue = id)
@@ -88,6 +90,9 @@ fun NavigationAppHosts(navController: NavHostController) {
         }
         composable(Destination.Foods.route) {
             FoodListScreen(navController)
+        }
+        composable(Destination.UpdateProfile.route) {
+            UpdateProfileScreen(navController)
         }
         composable(
             route = Destination.Video.route,

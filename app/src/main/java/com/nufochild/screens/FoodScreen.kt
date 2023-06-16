@@ -14,12 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -31,7 +33,6 @@ import androidx.navigation.NavHostController
 import com.nufochild.R
 import com.nufochild.ui.components.CardFoodList
 import com.nufochild.ui.components.TopBarBackButton
-import com.nufochild.ui.customview.FoodDialog
 import com.nufochild.ui.theme.Yellow500
 import com.nufochild.viewmodel.MainViewModel
 import org.koin.androidx.compose.getViewModel
@@ -48,11 +49,9 @@ fun FoodListScreen(
     val foodss = viewModel.foods.collectAsState()
     val foods = foodss.value
 
-    Scaffold(
-        topBar = {
-            TopBarBackButton(onclick = { navController.navigateUp() })
-        }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TopBarBackButton(onclick = { navController.navigateUp() }, actions = {})
+    }) { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
@@ -69,15 +68,17 @@ fun FoodListScreen(
                 contentScale = ContentScale.Crop
             )
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(foods) {
+                items(foods ?: emptyList()) {
                     CardFoodList(
-                        onChecked = {},
-                        text = it.nama!!,
-                        protein = it.protein!!,
-                        energy = it.energi!!,
-                        fat = it.lemak!!,
-                        fiber = it.serat!!,
-                        carbohydrate = it.karbohidrat!!
+                        onChecked = {
+                            viewModel.showDialog()
+                        },
+                        text = it.nama ?: "",
+                        protein = it.protein ?: 0f,
+                        energy = it.energi ?: 0f,
+                        fat = it.lemak ?: 0f,
+                        fiber = it.serat ?: 0f,
+                        carbohydrate = it.karbohidrat ?: 0f
                     )
                 }
             }
@@ -86,17 +87,15 @@ fun FoodListScreen(
 
 
     if (viewModel.isDialogShown) {
-        val data by viewModel.foodData.collectAsState()
-        FoodDialog(
-            onDismiss = {
-                viewModel.onDismissDialog()
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissDialog() },
+            confirmButton = {
+                Button(onClick = { viewModel.dismissDialog() }) {
+                    Text(text = "Ok")
+                }
             },
-            title = stringResource(id = R.string.nutrition_detail_title),
-            carbohydrates = data!!.carbo,
-            energy = data!!.energy,
-            fat = data!!.fat,
-            fiber = data!!.fiber,
-            protein = data!!.protein
+            title = { Text(text = stringResource(id = R.string.titleSuccessDialog)) },
+            text = { Text(text = stringResource(id = R.string.foodChecked)) }
         )
     }
 }

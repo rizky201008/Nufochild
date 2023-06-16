@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -56,35 +58,36 @@ fun HomeScreen(
     val ctx = LocalContext.current
     PortraitOrientation(context = ctx)
     val viewModel = getViewModel<MainViewModel>()
+
+
     LaunchedEffect(Unit) {
         viewModel.getVideo()
     }
+
     val responseVideoData = viewModel.responseVideoData.collectAsState()
     val videos = responseVideoData.value
     var videoId by remember {
         mutableStateOf("")
     }
-    val loading = viewModel.showLoading.collectAsState()
-    val isLoading = loading.value
 
     val energy by remember {
-        mutableStateOf(0.1f)
+        mutableStateOf(0f)
     }
     val energyvalue: Int = (energy * 100).toInt()
     val protein by remember {
-        mutableStateOf(0.2f)
+        mutableStateOf(0f)
     }
     val proteinvalue: Int = (protein * 100).toInt()
     val fat by remember {
-        mutableStateOf(0.3f)
+        mutableStateOf(0f)
     }
     val fatvalue: Int = (fat * 100).toInt()
     val fiber by remember {
-        mutableStateOf(0.3f)
+        mutableStateOf(0f)
     }
     val fibervalue: Int = (fiber * 100).toInt()
     val carbohydrate by remember {
-        mutableStateOf(0.9f)
+        mutableStateOf(0f)
     }
     val carbohydratevalue: Int = (carbohydrate * 100).toInt()
 
@@ -98,6 +101,23 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
+                if (viewModel.isDialogShown) {
+                    AlertDialog(
+                        onDismissRequest = { viewModel.dismissDialog() },
+                        confirmButton = {
+                            Button(onClick = { navController.navigate(Destination.UpdateProfile.route) }) {
+                                Text(text = "Ok")
+                            }
+                        },
+                        dismissButton = {
+                            Button(onClick = { viewModel.dismissDialog() }) {
+                                Text(text = stringResource(id = R.string.dismiss))
+                            }
+                        },
+                        title = { Text(text = "Oops") },
+                        text = { Text(text = stringResource(id = R.string.update_your_profile)) }
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .background(color = Yellow700)
@@ -150,21 +170,18 @@ fun HomeScreen(
                 }
             }
             items(videos ?: emptyList()) {
-                if (isLoading) {
+                if (viewModel.isLoading) {
                     showLoading()
                 } else {
                     CardVideoList(
-                        modifier = Modifier
-                            .clickable {
-                                videoId = it.url.toString()
-                                navController.navigate(
-                                    route = Destination.Video.setID(
-                                        videoId
-                                    )
+                        modifier = Modifier.clickable {
+                            videoId = it.url.toString()
+                            navController.navigate(
+                                route = Destination.Video.setID(
+                                    videoId
                                 )
-                            },
-                        image = it.image!!,
-                        title = it.title!!
+                            )
+                        }, image = it.image!!, title = it.title!!
                     )
                 }
             }

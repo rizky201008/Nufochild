@@ -7,6 +7,7 @@
 package com.nufochild
 
 import android.app.Application
+import com.nufochild.di.dbModule
 import com.nufochild.di.networkModule
 import com.nufochild.di.otherModule
 import com.nufochild.di.viewModelModule
@@ -18,7 +19,7 @@ class MainApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@MainApp)
-            modules(listOf(otherModule, networkModule, viewModelModule))
+            modules(listOf(otherModule, networkModule, viewModelModule, dbModule))
         }
     }
 }

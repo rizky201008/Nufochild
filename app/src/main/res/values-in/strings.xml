@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (rizky201008) 2023.
   ~ All code in this application is made by the author.
   ~ You may copy part of this code and you are allowed to include the author's name anywhere.
@@ -29,5 +28,13 @@
     <string name="label_gender">Jenis Kelamin</string>
     <string name="passMinLen">Panjang minimum </string>
     <string name="emailInvalid">Email invalid </string>
+    <string name="titleSuccessDialog">Berhasil</string>
+    <string name="foodChecked">Nutrisi berhasil di tambahkan</string>
+    <string name="update">Ubah</string>
+    <string name="image_cannot_detected">Gambar tidak terdeteksi</string>
     <string name="loginError">Gagal masuk silahkan cek kembali email atau password anda</string>
+    <string name="update_your_profile">Sebelum melihat skor nutrisi harian kamu harus update profil</string>
+    <string name="dismiss">Abaikan</string>
+    <string name="back">Kembali</string>
+    <string name="update_failed">Update data gagal</string>
 </resources>

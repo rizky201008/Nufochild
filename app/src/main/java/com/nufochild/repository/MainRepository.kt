@@ -6,20 +6,65 @@
 
 package com.nufochild.repository
 
+import android.content.Context
 import android.util.Log
 import com.nufochild.api.ApiServices
 import com.nufochild.data.general.ResponseVideoItem
 import com.nufochild.data.general.SessionPref
+import com.nufochild.data.general.UserNutritions
+import com.nufochild.data.local.NutritionDB
+import com.nufochild.data.local.NutritionDao
+import com.nufochild.data.local.UserDetailDB
+import com.nufochild.data.local.UserDetailDao
 import com.nufochild.data.request.RequestLogin
 import com.nufochild.data.request.RequestRegister
+import com.nufochild.data.request.RequestUpdateProfile
 import com.nufochild.data.response.FoodsItem
+import com.nufochild.data.response.Nutrition
 import com.nufochild.data.response.ResponseDetailUser
 import com.nufochild.data.response.ResponseLogin
 import com.nufochild.data.response.ResponseRegister
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainRepository(
     private val sessionPref: SessionPref,
+    context: Context
 ) {
+    private val nutritionDao: NutritionDao
+    private val userDetailDao: UserDetailDao
+    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
+
+    init {
+        val db = NutritionDB.getDatabase(context)
+        val db1 = UserDetailDB.getDatabase(context)
+        nutritionDao = db.nutritionDao()
+        userDetailDao = db1.detailUserDao()
+    }
+
+    fun getNutrition(): List<UserNutritions?> = nutritionDao.getAllNutrition()
+
+    fun insertNutrition(nutrition: UserNutritions) {
+        executorService.execute { nutritionDao.insert(nutrition) }
+    }
+
+    suspend fun insertUserDetail(profile: RequestUpdateProfile): Nutrition {
+        val apiServices = ApiServices.getInstance()
+        val token = getToken()
+        val response = apiServices.updateProfile("Bearer $token", profile)
+        Log.i("xxxnc", "insertUserDetail $response")
+        return try {
+            if (response.isSuccessful) {
+                response.body()?.nutrition!!
+            } else {
+                Nutrition(error = true)
+            }
+        } catch (e: Exception) {
+            Log.i("xxxnc", "Error update profile $e")
+            Nutrition(error = true)
+        }
+    }
+
     suspend fun getVideos(): List<ResponseVideoItem>? {
         val apiServices = ApiServices.getInstance()
         val response = apiServices.videos()
@@ -27,43 +72,36 @@ class MainRepository(
             if (response.isSuccessful) {
                 response.body()
             } else {
-                listOf(ResponseVideoItem(null, null, null, false, null))
+                listOf(ResponseVideoItem(success = false))
             }
         } catch (e: Exception) {
-            listOf(ResponseVideoItem(null, null, null, false, null))
+            listOf(ResponseVideoItem(success = false))
         }
     }
 
     suspend fun getFood(): List<FoodsItem> {
-        Log.i("xxxncRepo", "getFood Hit")
         val apiServices = ApiServices.getInstance()
         val response = apiServices.meals()
         return try {
             if (response.isSuccessful) {
-                response.body()!!
+                response.body() ?: emptyList()
             } else {
-                listOf(FoodsItem(null, null, null, null, null, null, null, null, false))
+                listOf(FoodsItem(success = false))
             }
         } catch (e: Exception) {
             listOf(
                 FoodsItem(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    e.localizedMessage,
-                    false
+                    success = false
                 )
             )
         }
     }
 
-    fun getToken(): String {
-        return sessionPref.getToken()
-    }
+    fun getToken(): String = sessionPref.getToken()
+    fun getProfileStatus(): Boolean = sessionPref.getProfileStatus()
+    fun setProfileStatus(value: Boolean) = sessionPref.setProfileStatus(value)
+    fun getNutritionStatus(): Boolean = sessionPref.getNutritionStatus()
+    fun setNutritionStatus(value: Boolean) = sessionPref.setNutritionStatus(value)
 
     suspend fun getProfile(): ResponseDetailUser {
         val apiServices = ApiServices.getInstance()
@@ -71,17 +109,35 @@ class MainRepository(
         val bearerToken = "Bearer $token"
         return try {
             val response = apiServices.profile(bearerToken)
+            Log.i("xxxncRepo", "getDetail $response")
             if (response.isSuccessful) {
                 response.body()!!
             } else {
                 ResponseDetailUser(
-                    null, null, null, null, null, null, response.body()!!.message, false
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    response.message(),
+                    false
                 )
             }
         } catch (e: Exception) {
-            ResponseDetailUser(null, null, null, null, null, null, e.localizedMessage, false)
+            ResponseDetailUser(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                e.localizedMessage,
+                false
+            )
         }
     }
+
 
     suspend fun loginAccount(requestLogin: RequestLogin): ResponseLogin {
         val apiService = ApiServices.getInstance()

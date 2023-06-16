@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Nufochild</string>
     <string name="label_name">Name</string>
     <string name="save">Save</string>
+    <string name="image_cannot_detected">Image cannot detected</string>
     <string name="label_age">Age</string>
     <string name="label_height">Height (CM)</string>
     <string name="hint_name" translatable="false">Jhoni Dhoel</string>
@@ -29,5 +30,12 @@
     <string name="detecting">detecting...</string>
     <string name="passMinLen">Minimum length is </string>
     <string name="emailInvalid">Email invalid </string>
+    <string name="titleSuccessDialog">Success</string>
+    <string name="foodChecked">Nutrition added successfully</string>
     <string name="loginError">Login failed please check your email and password</string>
+    <string name="update">Update</string>
+    <string name="update_your_profile">Before see your daily nutrition score you must edit your profile</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="back">Back</string>
+    <string name="update_failed">Update data failed!</string>
 </resources>

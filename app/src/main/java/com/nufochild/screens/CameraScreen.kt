@@ -85,7 +85,6 @@ fun CameraScreen(
         IconButton(
             modifier = Modifier.padding(bottom = 20.dp),
             onClick = {
-                Log.i("nufochild", "ON CLICK")
                 takePhoto(
                     filenameFormat = "yyyy-MM-dd-HH-mm-ss-SSS",
                     imageCapture = imageCapture,
@@ -118,7 +117,6 @@ private fun takePhoto(
     onImageCaptured: (Uri) -> Unit,
     onError: (ImageCaptureException) -> Unit
 ) {
-
     val photoFile = File(
         outputDirectory,
         SimpleDateFormat(filenameFormat, Locale.US).format(System.currentTimeMillis()) + ".jpg"
